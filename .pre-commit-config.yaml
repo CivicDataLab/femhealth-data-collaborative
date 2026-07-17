@@ -1,0 +1,75 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+        exclude: ^aws/cloudformation/.*\.yml$
+    -   id: check-added-large-files
+    -   id: debug-statements
+
+-   repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+    -   id: black
+        language_version: python3.11
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+    -   id: isort
+        args: ["--profile", "black"]
+
+-   repo: local
+    hooks:
+    -   id: cloudformation-validate
+        name: AWS CloudFormation Validation
+        description: Validates CloudFormation templates using AWS CLI
+        entry: bash -c 'aws cloudformation validate-template --template-body file://$0 || exit 1'
+        language: system
+        files: ^aws/cloudformation/.*\.yml$
+        require_serial: true
+        pass_filenames: true
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+    -   id: mypy
+        language: python
+        language_version: python3.11
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+          - types-python-dateutil
+          - types-setuptools
+          - django-stubs
+          - djangorestframework-stubs
+          - pandas-stubs
+          - pandas
+          - deepdiff
+          - types-redis
+          - strawberry-graphql
+          - strawberry-graphql-django
+          - django-environ
+          - structlog
+          - django
+          - elasticsearch-dsl
+          - django-elasticsearch-dsl
+          - django-elasticsearch-dsl-drf
+          - pyecharts
+          - selenium
+          - python-decouple
+          - djangorestframework
+          - django-debug-toolbar
+          - django-ratelimit
+          - django-cors-headers
+          - psycopg2-binary
+          - python-dotenv
+          - uvicorn
+          - djangorestframework-simplejwt
+          - python-keycloak
+          - django-activity-stream
+
+        args: [--config-file=mypy.ini]
+        exclude: ^tests/
