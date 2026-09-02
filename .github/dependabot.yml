@@ -13,7 +13,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 10
     reviewers:
-      - "Deepthi-Chand"
+      - "saurabh-levin"
     labels:
       - "dependencies"
       - "python"
@@ -49,7 +49,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     reviewers:
-      - "Deepthi-Chand"
+      - "saurabh-levin"
     labels:
       - "dependencies"
       - "docker"
@@ -68,7 +68,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     reviewers:
-      - "Deepthi-Chand"
+      - "saurabh-levin"
     labels:
       - "dependencies"
       - "github-actions"
