@@ -27,4 +27,6 @@ This repository contains datasets, analytics and models used in the FemHealth Da
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Code, scripts, documentation, and original analysis authored by the FemHealth Data Collaborative are licensed under the [MIT License](LICENSE).
+
+This repository also redistributes third-party datasets (under `data-ecosystem/sources/`) sourced from government ministries, survey agencies, and research organizations (e.g. MoHFW, MoSPI, NIMHANS, MWCD, NCAER, ASDMA). Those datasets are **not** covered by the MIT License above — they remain under their original publishers' terms, such as the [Government Open Data License – India (GODL)](https://data.gov.in/government-open-data-license-india) where noted. See each dataset folder's `README.md` for its specific source, publisher, and license where available. When reusing or redistributing this data, attribute the original publisher, not just this repository.
