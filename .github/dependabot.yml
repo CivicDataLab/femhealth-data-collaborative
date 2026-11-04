@@ -7,37 +7,21 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      interval: "monthly"          # weekly is a lot for a small team
       timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "saurabh-levin"
-    labels:
-      - "dependencies"
-      - "python"
-      - "security"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "python"]
     commit-message:
-      prefix: "chore(deps)"
-      include: "scope"
-    # Group updates to reduce PR noise
-    groups:
-      # Group all patch and minor updates for dev dependencies
-      dev-dependencies:
-        dependency-type: "development"
-        update-types:
-          - "minor"
-          - "patch"
-      # Group patch updates for production dependencies
-      production-dependencies:
-        dependency-type: "production"
-        update-types:
-          - "patch"
-    # Allow both direct and indirect dependencies
+      prefix: "chore"
+      include: "scope"             # → "chore(deps): ..."
     allow:
-      - dependency-type: "direct"
-      - dependency-type: "indirect"
+      - dependency-type: "direct"  # drop transitive noise
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      python-minor-patch:
+        update-types: ["minor", "patch"]   # one PR for all routine bumps
 
   # Docker base images
   - package-ecosystem: "docker"
