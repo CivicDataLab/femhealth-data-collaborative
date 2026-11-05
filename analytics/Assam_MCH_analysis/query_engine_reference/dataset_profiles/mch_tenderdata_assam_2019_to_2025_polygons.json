@@ -1,0 +1,576 @@
+{
+  "resource_name": "MCH_tenderdata_Assam_2019_to_2025_polygons.csv",
+  "dataspace_dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9",
+  "dataspace_resource_id": "76bb9002-671b-4883-aa45-679c647fc06d",
+  "repo_path": "analytics/Assam_MCH_analysis/TENDERS/data/MCH_tenderdata_Assam_2019_to_2025_polygons.csv",
+  "sha256": "212d3c87c0460d1087c6100730898220546e0ebc5c1d7abe3b477f2729c3b662",
+  "profiled_on": "2026-11-04",
+  "produced_by": [
+    "analytics/Assam_MCH_analysis/TENDERS/data/Superset prep/polygon-to-vertices.ipynb"
+  ],
+  "purpose": "Map layer for the Superset dashboard: each tender row carries its district polygon.",
+  "v1_analysable": false,
+  "grain": "One row per tender with a district boundary attached.",
+  "row_count": 81,
+  "column_count": 45,
+  "quirks": [
+    {
+      "id": "incomplete",
+      "text": "Has 81 of the 112 tenders in the main file. Missing tenders by DISTRICT_FINALISED: {'NA': 13, 'KAMRUP METRO': 13, 'BARPETA': 4, 'NAGAON': 1}. Why the geotagged ones were dropped is not documented. Never use for totals."
+    },
+    {
+      "id": "large_text_columns",
+      "text": "geometry and polygons hold full boundary coordinates (~2 MB file). Do not send them to the LLM; drop them before profiling or narration."
+    },
+    {
+      "id": "dtname_mismatch",
+      "text": "dtname differs from district_finalised on 4 rows (CONFLICT rows and the SIVSAGAR spelling)."
+    }
+  ],
+  "columns": [
+    {
+      "name": "tender_id",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 81,
+        "examples": [
+          "2018_BoTC_5483_1",
+          "2018_BoTC_5485_1",
+          "2018_BoTC_5487_1"
+        ]
+      }
+    },
+    {
+      "name": "tender_externalreference",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 57,
+        "examples": [
+          "TN 109/1",
+          "TN 109/2",
+          "TN 109/3"
+        ]
+      }
+    },
+    {
+      "name": "tender_title",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 81,
+        "examples": [
+          "Construction of New Labour Room cum Maternity Ward at Kamalsing Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cen",
+          "Construction of New Labour Room cum Maternity Ward at Kachugaon Block Primary Health Centre of Kachugaon Minority Concentrated Block, under ",
+          "Construction of New Labour Room cum Maternity Ward at Gurufela Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cent"
+        ]
+      }
+    },
+    {
+      "name": "work_description",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 81,
+        "examples": [
+          "Construction of New Labour Room cum Maternity Ward at Kamalsing Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cen",
+          "Construction of New Labour Room cum Maternity Ward at Kachugaon Block Primary Health Centre of Kachugaon Minority Concentrated Block, under ",
+          "Construction of New Labour Room cum Maternity Ward at Gurufela Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cent"
+        ]
+      }
+    },
+    {
+      "name": "tender_category",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "Works",
+          "Goods"
+        ]
+      }
+    },
+    {
+      "name": "tender_type",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "Open Tender",
+          "Open Limited"
+        ]
+      }
+    },
+    {
+      "name": "form_of_contract",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 7,
+        "examples": [
+          "Item Rate",
+          "Supply",
+          "Turn-key"
+        ]
+      }
+    },
+    {
+      "name": "product_category",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 9,
+        "examples": [
+          "Civil Works - Building",
+          "Civil Works",
+          "Publishing/Printing"
+        ]
+      }
+    },
+    {
+      "name": "is_multi_currency_allowed_for_boq",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "No"
+        ]
+      }
+    },
+    {
+      "name": "allow_two_stage_bidding",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "No"
+        ]
+      }
+    },
+    {
+      "name": "independent_external_monitor/remarks",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 81,
+        "distinct": 1,
+        "examples": [
+          "NA"
+        ]
+      }
+    },
+    {
+      "name": "published_date",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 56,
+        "examples": [
+          "02-Feb-2018 04:30 PM",
+          "15-Feb-2018 04:30 PM",
+          "11-Oct-2018 10:30 AM"
+        ]
+      }
+    },
+    {
+      "name": "pre_bid_meeting_date",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 49,
+        "distinct": 32,
+        "examples": [
+          "NA",
+          "07-Jun-2018 11:00 AM",
+          "30-Jul-2019 03:30 PM"
+        ]
+      }
+    },
+    {
+      "name": "bid_validity_days",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 4,
+        "examples": [
+          "180.0",
+          "225.0",
+          "90.0"
+        ]
+      }
+    },
+    {
+      "name": "should_allow_nda_tender",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "No"
+        ]
+      }
+    },
+    {
+      "name": "allow_preferential_bidder",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "No"
+        ]
+      }
+    },
+    {
+      "name": "payment_mode",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 3,
+        "examples": [
+          "Offline",
+          "Not Applicable",
+          "Online"
+        ]
+      }
+    },
+    {
+      "name": "bid_opening_date",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 57,
+        "examples": [
+          "21-Feb-2018 11:00 AM",
+          "07-Mar-2018 11:00 AM",
+          "23-Oct-2018 02:00 PM"
+        ]
+      }
+    },
+    {
+      "name": "organisation_chain",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 13,
+        "examples": [
+          "Bodoland Territorial Council||PWD-BTC",
+          "Bodoland Territorial Council-PWD||Director Cum CHD - PWD BTC",
+          "Public Works Building and NH Department||Chief Engineer-Building - PWBNH"
+        ]
+      }
+    },
+    {
+      "name": "location",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 45,
+        "examples": [
+          "Kokrajhar",
+          "Dibrugarh",
+          "Hailakandi"
+        ]
+      }
+    },
+    {
+      "name": "pincode",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 41,
+        "examples": [
+          "783370.0",
+          "788730.0",
+          "786001.0"
+        ]
+      }
+    },
+    {
+      "name": "no_of_bids_received",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "2.0",
+          "1.0"
+        ]
+      }
+    },
+    {
+      "name": "tender_value_in_rupees",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 76,
+        "examples": [
+          "2311988.0",
+          "2060116.0",
+          "3708396.0"
+        ]
+      }
+    },
+    {
+      "name": "bidder_name",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 69,
+        "examples": [
+          "Mwikwm Basumatary",
+          "DANI KHUNGUR WARY",
+          "Uttam Chakraborty"
+        ]
+      }
+    },
+    {
+      "name": "awarded_value",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 72,
+        "examples": [
+          "2370817.0",
+          "2466411.0",
+          "2242628.0"
+        ]
+      }
+    },
+    {
+      "name": "status",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 5,
+        "examples": [
+          "Accepted-AOC",
+          "Rejected-Finance",
+          "Not Admitted-Fee/PreQual/Technical"
+        ]
+      }
+    },
+    {
+      "name": "contract_date",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 2,
+        "distinct": 47,
+        "examples": [
+          "07-Mar-2019",
+          "28-Sep-2019",
+          "10-Oct-2019"
+        ]
+      }
+    },
+    {
+      "name": "tender_stage",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 21,
+        "distinct": 2,
+        "examples": [
+          "AOC",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "department",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 13,
+        "examples": [
+          "Bodoland Territorial Council||PWD-BTC",
+          "Bodoland Territorial Council-PWD||Director Cum CHD - PWD BTC",
+          "Public Works Building and NH Department||Chief Engineer-Building - PWBNH"
+        ]
+      }
+    },
+    {
+      "name": "is_mch_strict",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "True",
+          "False"
+        ]
+      }
+    },
+    {
+      "name": "positive_keywords_dict",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 38,
+        "examples": [
+          "{'maternal': 0, 'maternity': 2, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy",
+          "{'maternal': 0, 'maternity': 1, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy",
+          "{'maternal': 0, 'maternity': 1, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy"
+        ]
+      }
+    },
+    {
+      "name": "negative_keywords_dict",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "{'veterinary': 0, 'husbandry': 0, 'animal': 0, 'livestock': 0}"
+        ]
+      }
+    },
+    {
+      "name": "scheme",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 15,
+        "distinct": 15,
+        "examples": [
+          "MSDP",
+          "CHD_SCHEME",
+          "SOPD"
+        ]
+      }
+    },
+    {
+      "name": "is_awarded",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "True",
+          "False"
+        ]
+      }
+    },
+    {
+      "name": "is_mch_broad",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "True"
+        ]
+      }
+    },
+    {
+      "name": "month",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 33,
+        "examples": [
+          "2019_03",
+          "2019_09",
+          "2019_10"
+        ]
+      }
+    },
+    {
+      "name": "tender_district_externalreference",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 81,
+        "distinct": 1,
+        "examples": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "tender_district_title_description",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 17,
+        "distinct": 25,
+        "examples": [
+          "KOKRAJHAR",
+          "UDALGURI",
+          "DIBRUGARH"
+        ]
+      }
+    },
+    {
+      "name": "tender_district_location",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 4,
+        "distinct": 26,
+        "examples": [
+          "KOKRAJHAR",
+          "DIBRUGARH",
+          "HAILAKANDI"
+        ]
+      }
+    },
+    {
+      "name": "btc_flag",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "True",
+          "False"
+        ]
+      }
+    },
+    {
+      "name": "district_finalised",
+      "description": "snake_case copy of the matching column in MCH_tenderdata_Assam_2019_to_2025.csv.",
+      "stats": {
+        "missing": 0,
+        "distinct": 26,
+        "examples": [
+          "KOKRAJHAR",
+          "CONFLICT",
+          "DIBRUGARH"
+        ]
+      }
+    },
+    {
+      "name": "geometry",
+      "description": "District boundary as WKT POLYGON / MULTIPOLYGON."
+    },
+    {
+      "name": "dtname",
+      "description": "District name from the boundary file joined to district_finalised.",
+      "stats": {
+        "missing": 4,
+        "distinct": 25,
+        "examples": [
+          "KOKRAJHAR",
+          "",
+          "DIBRUGARH"
+        ]
+      }
+    },
+    {
+      "name": "polygons",
+      "description": "Same boundary as a JSON array of [lon, lat] vertices, for Superset deck.gl Polygon charts."
+    },
+    {
+      "name": "timeperiod",
+      "description": "result month as 'YYYY-MM' (the main file's 'month' with a hyphen).",
+      "stats": {
+        "missing": 0,
+        "distinct": 33,
+        "examples": [
+          "2019-03",
+          "2019-09",
+          "2019-10"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,946 @@
+{
+  "resource_name": "MCH_tenderdata_Assam_2019_to_2025.csv",
+  "dataspace_dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9",
+  "dataspace_resource_id": "bc22644a-e7ff-4791-ac70-98d7322352e5",
+  "repo_path": "analytics/Assam_MCH_analysis/TENDERS/data/MCH_tenderdata_Assam_2019_to_2025.csv",
+  "identical_copies": [
+    "analytics/Assam_MCH_analysis/TENDERS/data/mchtenders_districtgeotagged.csv (same columns and rows; pipeline output)",
+    "analytics/Assam_MCH_analysis/TENDERS/data/Superset prep/MCH_tenderdata_Assam_2019_to_2025.csv (byte-identical)"
+  ],
+  "sha256": "7ea077edefd0e93dda820984ad7b4e01bc5ed67398c20121998f4ecce1623edc",
+  "profiled_on": "2026-11-04",
+  "produced_by": [
+    "analytics/Assam_MCH_analysis/TENDERS/scripts/mch_tenders.py",
+    "analytics/Assam_MCH_analysis/TENDERS/scripts/geocode_district.py"
+  ],
+  "analysis_view": "views.sql -> mch_tenders",
+  "grain": "One row per MCH-related tender (unique Tender ID), with the bid listed at the results stage.",
+  "row_count": 112,
+  "column_count": 41,
+  "coverage": {
+    "geography": "Assam; district (DISTRICT_FINALISED)",
+    "districts_present": [
+      "BAKSA",
+      "BARPETA",
+      "BONGAIGAON",
+      "CACHAR",
+      "CHIRANG",
+      "DARRANG",
+      "DHEMAJI",
+      "DHUBRI",
+      "DIBRUGARH",
+      "GOALPARA",
+      "GOLAGHAT",
+      "HAILAKANDI",
+      "JORHAT",
+      "KAMRUP METRO",
+      "KARIMGANJ",
+      "KOKRAJHAR",
+      "LAKHIMPUR",
+      "MORIGAON",
+      "NAGAON",
+      "NALBARI",
+      "SIVSAGAR",
+      "SONITPUR",
+      "TAMULPUR",
+      "TINSUKIA",
+      "UDALGURI"
+    ],
+    "districts_present_count": 25,
+    "published_from": "2017-12-15",
+    "published_to": "2025-08-29",
+    "contract_from": "2019-03-07",
+    "contract_to": "2025-10-07",
+    "result_months": [
+      "2019_03",
+      "2019_09",
+      "2019_10",
+      "2019_11",
+      "2020_02",
+      "2020_11",
+      "2020_12",
+      "2021_03",
+      "2021_04",
+      "2021_08",
+      "2022_01",
+      "2022_02",
+      "2022_04",
+      "2022_05",
+      "2022_06",
+      "2023_02",
+      "2023_03",
+      "2023_04",
+      "2023_05",
+      "2023_06",
+      "2023_07",
+      "2023_08",
+      "2023_09",
+      "2023_12",
+      "2024_03",
+      "2024_04",
+      "2024_06",
+      "2024_07",
+      "2024_09",
+      "2024_10",
+      "2024_11",
+      "2025_02",
+      "2025_03",
+      "2025_06",
+      "2025_07",
+      "2025_08",
+      "2025_10"
+    ]
+  },
+  "headline_numbers": {
+    "tenders": 112,
+    "awarded_tenders": 59,
+    "awarded_amount_inr": 2682941028.31,
+    "largest_awarded_tender": {
+      "tender_id": "2020_PWBNH_17202_1",
+      "title": "Mother and Child Hospital (500 bedded) at GMCH, Guwahati, SOPD-ODS",
+      "awarded_amount_inr": 2140343148.0,
+      "share_of_awarded_amount": 0.798
+    }
+  },
+  "quirks": [
+    {
+      "id": "bid_value_not_award",
+      "text": "'Awarded Value' is filled for rejected and not-admitted bids too. Summing all rows overstates spending by ~₹58.7 crore. Use awarded_amount_inr (is_awarded only)."
+    },
+    {
+      "id": "goods_award_placeholders",
+      "text": "19 awarded tenders, almost all goods or item-rate drug/equipment contracts, record a placeholder or unit rate instead of the contract value: ₹0 (7), ₹1 (5, e.g. a JE vaccine tender estimated at ₹10 crore), ₹375 per Samahar kit. Spending on goods, and by Health and Family Welfare, is therefore badly understated. Flag: awarded_value_suspect in the view. Report these tenders separately, and use tender_value_inr as the estimate where it exists."
+    },
+    {
+      "id": "single_tender_dominates",
+      "text": "One ₹214 crore GMCH hospital tender is ~80% of awarded value. Say so in any total, trend or Kamrup Metro answer; offer a view without it."
+    },
+    {
+      "id": "indian_digit_grouping",
+      "text": "'Tender Value in ₹' is text like '2,06,34,54,000'. Values are rupees, not lakh or crore."
+    },
+    {
+      "id": "title_period_mismatch",
+      "text": "Title says 2019 to 2025, but 10 tenders were published in Dec 2017 or 2018; the range is the results period."
+    },
+    {
+      "id": "result_month_not_publish_month",
+      "text": "'month' is the results batch, close to the contract month, not the publication month."
+    },
+    {
+      "id": "fiscal_vs_calendar",
+      "text": "Source has calendar dates only. Government readers often expect fiscal years (Apr to Mar); contract_fiscal_year in the view provides it."
+    },
+    {
+      "id": "district_missing",
+      "text": "13 tenders not geotagged (NA) and 3 CONFLICT. District totals do not add up to the state total."
+    },
+    {
+      "id": "district_spelling",
+      "text": "'SIVSAGAR' here vs 'SIVASAGAR' in the boundary file; normalised in the view."
+    },
+    {
+      "id": "scheme_multi_value",
+      "text": "Scheme holds several codes separated by ';'. Counting per scheme double counts tenders across schemes."
+    },
+    {
+      "id": "chd_false_positive",
+      "text": "CHD_SCHEME (6 tenders) comes from the office name 'Director Cum CHD - PWD BTC', not the Congenital Heart Disease scheme."
+    },
+    {
+      "id": "btc_department_spelling",
+      "text": "Bodoland Territorial Council appears as both 'Bodoland Territorial Council' and 'Bodoland Territorial Council-PWD' at the top level."
+    },
+    {
+      "id": "small_counts",
+      "text": "Most districts have 1 to 3 tenders and most months have 1 to 5. Avoid rankings or % change on such small numbers."
+    },
+    {
+      "id": "coverage_bias",
+      "text": "Only tenders published on the portal (the use case cites ~20% of all tenders). Absence of tenders in a district does not mean absence of spending."
+    },
+    {
+      "id": "pandas_na",
+      "text": "pandas reads the string 'NA' as missing by default (DISTRICT_FINALISED, Pre Bid Meeting Date). Load with keep_default_na=False or use the view."
+    }
+  ],
+  "suggested_dimensions": [
+    "district",
+    "department_top",
+    "scheme (mch_tender_schemes)",
+    "tender_category",
+    "product_category",
+    "result_year",
+    "contract_fiscal_year",
+    "status",
+    "is_btc"
+  ],
+  "suggested_measures": [
+    "count(*)",
+    "count(*) FILTER (WHERE is_awarded)",
+    "sum(awarded_amount_inr)",
+    "sum(tender_value_inr)",
+    "median(days_publish_to_contract)"
+  ],
+  "joins": {
+    "district": "Joins to data-ecosystem/maps/Geojson/assam_district_2024-11.geojson on dtname, and to district-level outcome data (IMR, NFHS-5, HMIS) after name normalisation. Cross-dataset: not in v1."
+  },
+  "columns": [
+    {
+      "name": "Tender ID",
+      "view_column": "tender_id",
+      "type": "string",
+      "description": "Portal tender ID, e.g. '2023_NHM_34072_1' (year_issuer_number_part). Unique per row.",
+      "flags": [
+        "primary_key"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 112,
+        "examples": [
+          "2018_BoTC_5483_1",
+          "2018_BoTC_5485_1",
+          "2018_BoTC_5487_1"
+        ]
+      }
+    },
+    {
+      "name": "tender_externalreference",
+      "view_column": "tender_reference",
+      "type": "string",
+      "description": "Issuer's own reference number. Not unique: several tenders can share one.",
+      "stats": {
+        "missing": 0,
+        "distinct": 86,
+        "examples": [
+          "TN 109/1",
+          "TN 109/2",
+          "TN 109/3"
+        ]
+      }
+    },
+    {
+      "name": "tender_title",
+      "view_column": "tender_title",
+      "type": "text",
+      "description": "Tender title as published. Some BTC titles are just codes like 'TN_217_D'.",
+      "flags": [
+        "searchable_text"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 112,
+        "examples": [
+          "Construction of New Labour Room cum Maternity Ward at Kamalsing Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cen",
+          "Construction of New Labour Room cum Maternity Ward at Kachugaon Block Primary Health Centre of Kachugaon Minority Concentrated Block, under ",
+          "Construction of New Labour Room cum Maternity Ward at Gurufela Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cent"
+        ]
+      }
+    },
+    {
+      "name": "Work Description",
+      "view_column": "work_description",
+      "type": "text",
+      "description": "Work description; often the same as the title, sometimes cut off.",
+      "flags": [
+        "searchable_text"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 112,
+        "examples": [
+          "Construction of New Labour Room cum Maternity Ward at Kamalsing Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cen",
+          "Construction of New Labour Room cum Maternity Ward at Kachugaon Block Primary Health Centre of Kachugaon Minority Concentrated Block, under ",
+          "Construction of New Labour Room cum Maternity Ward at Gurufela Subsidiary Health Centre of Kachugaon Minority Concentrated Block, under cent"
+        ]
+      }
+    },
+    {
+      "name": "Tender Category",
+      "view_column": "tender_category",
+      "type": "category",
+      "description": "Works, Goods or Services.",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 3,
+        "values": {
+          "Works": 73,
+          "Goods": 38,
+          "Services": 1
+        }
+      }
+    },
+    {
+      "name": "Tender Type",
+      "view_column": "tender_type",
+      "type": "category",
+      "description": "Open Tender, Open Limited, Limited or Single.",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 4,
+        "values": {
+          "Open Tender": 103,
+          "Open Limited": 7,
+          "Single": 1,
+          "Limited": 1
+        }
+      }
+    },
+    {
+      "name": "Form of contract",
+      "view_column": "form_of_contract",
+      "type": "category",
+      "description": "Item Rate, Item Wise, Supply, Buy, Turn-key, Works, Fixed-rate.",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 7,
+        "values": {
+          "Item Rate": 65,
+          "Item Wise": 22,
+          "Supply": 12,
+          "Buy": 7,
+          "Turn-key": 3,
+          "Works": 2,
+          "Fixed-rate": 1
+        }
+      }
+    },
+    {
+      "name": "Product Category",
+      "view_column": "product_category",
+      "type": "category",
+      "description": "Portal product category (Civil Works, Medicines, Medical Equipments/Waste...).",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 12,
+        "values": {
+          "Civil Works": 35,
+          "Civil Works - Building": 34,
+          "Medical Equipments/Waste": 10,
+          "Publishing/Printing": 8,
+          "Medicines": 7,
+          "Miscellaneous Goods": 7,
+          "Electrical Works": 3,
+          "Supply of Materials": 2,
+          "Food Products": 2,
+          "Laboratory and scientific equipment": 2,
+          "Civil Works – Roads": 1,
+          "Miscellaneous Services": 1
+        }
+      }
+    },
+    {
+      "name": "Is Multi Currency Allowed For BOQ",
+      "view_column": null,
+      "type": "category",
+      "description": "Always 'No'. Not useful.",
+      "flags": [
+        "constant"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "values": {
+          "No": 112
+        }
+      }
+    },
+    {
+      "name": "Allow Two Stage Bidding",
+      "view_column": null,
+      "type": "category",
+      "description": "Always 'No'. Not useful.",
+      "flags": [
+        "constant"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "values": {
+          "No": 112
+        }
+      }
+    },
+    {
+      "name": "Independent External Monitor/Remarks",
+      "view_column": null,
+      "type": "category",
+      "description": "Always 'NA'. Not useful.",
+      "flags": [
+        "constant"
+      ],
+      "stats": {
+        "missing": 112,
+        "distinct": 1,
+        "values": {
+          "NA": 112
+        }
+      }
+    },
+    {
+      "name": "Published Date",
+      "view_column": "published_at",
+      "type": "datetime",
+      "description": "Publication timestamp, format '02-Feb-2018 04:30 PM'.",
+      "flags": [
+        "time"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 85,
+        "examples": [
+          "02-Feb-2018 04:30 PM",
+          "15-Feb-2018 04:30 PM",
+          "11-Oct-2018 10:30 AM"
+        ]
+      }
+    },
+    {
+      "name": "Pre Bid Meeting Date",
+      "view_column": null,
+      "type": "datetime",
+      "description": "Pre-bid meeting timestamp; mostly 'NA'.",
+      "stats": {
+        "missing": 58,
+        "distinct": 54,
+        "examples": [
+          "NA",
+          "07-Jun-2018 11:00 AM",
+          "30-Jul-2019 03:30 PM"
+        ]
+      }
+    },
+    {
+      "name": "Bid Validity(Days)",
+      "view_column": null,
+      "type": "integer",
+      "unit": "days",
+      "description": "Bid validity period.",
+      "stats": {
+        "missing": 0,
+        "distinct": 6,
+        "examples": [
+          "180.0",
+          "225.0",
+          "90.0"
+        ]
+      }
+    },
+    {
+      "name": "Should Allow NDA Tender",
+      "view_column": null,
+      "type": "category",
+      "description": "Always 'No'. Not useful.",
+      "flags": [
+        "constant"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "values": {
+          "No": 112
+        }
+      }
+    },
+    {
+      "name": "Allow Preferential Bidder",
+      "view_column": null,
+      "type": "category",
+      "description": "Always 'No'. Not useful.",
+      "flags": [
+        "constant"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "values": {
+          "No": 112
+        }
+      }
+    },
+    {
+      "name": "Payment Mode",
+      "view_column": null,
+      "type": "category",
+      "description": "Online, Offline or Not Applicable (fee payment).",
+      "stats": {
+        "missing": 0,
+        "distinct": 3,
+        "values": {
+          "Online": 53,
+          "Offline": 51,
+          "Not Applicable": 8
+        }
+      }
+    },
+    {
+      "name": "Bid Opening Date",
+      "view_column": "bid_opening_at",
+      "type": "datetime",
+      "description": "Bid opening timestamp, same format as Published Date.",
+      "flags": [
+        "time"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 86,
+        "examples": [
+          "21-Feb-2018 11:00 AM",
+          "07-Mar-2018 11:00 AM",
+          "23-Oct-2018 02:00 PM"
+        ]
+      }
+    },
+    {
+      "name": "Organisation Chain",
+      "view_column": "organisation_chain",
+      "type": "string",
+      "description": "Issuing organisation hierarchy, '||'-separated. Same as Department in this file.",
+      "stats": {
+        "missing": 0,
+        "distinct": 19,
+        "examples": [
+          "Bodoland Territorial Council||PWD-BTC",
+          "Bodoland Territorial Council-PWD||Director Cum CHD - PWD BTC",
+          "Public Works Building and NH Department||Chief Engineer-Building - PWBNH"
+        ]
+      }
+    },
+    {
+      "name": "location",
+      "view_column": "location_text",
+      "type": "string",
+      "description": "Free-text work location from the portal (town, facility or district). One input to geotagging.",
+      "stats": {
+        "missing": 0,
+        "distinct": 64,
+        "examples": [
+          "Kokrajhar",
+          "Dibrugarh",
+          "Hailakandi"
+        ]
+      }
+    },
+    {
+      "name": "Pincode",
+      "view_column": "pincode",
+      "type": "integer",
+      "description": "Work-location PIN code as entered by the issuer (read as float in pandas, e.g. 783370.0).",
+      "stats": {
+        "missing": 0,
+        "distinct": 49,
+        "examples": [
+          "783370.0",
+          "788730.0",
+          "786001.0"
+        ]
+      }
+    },
+    {
+      "name": "No of Bids Received",
+      "view_column": "bids_received",
+      "type": "integer",
+      "unit": "bids",
+      "description": "Number of bids received (1 or 2 in this file).",
+      "flags": [
+        "measure"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "examples": [
+          "2.0",
+          "1.0"
+        ]
+      }
+    },
+    {
+      "name": "Tender Value in ₹",
+      "view_column": "tender_value_inr",
+      "type": "number",
+      "unit": "INR",
+      "description": "Estimated tender value at publication. String with Indian digit grouping ('2,06,34,54,000'); strip commas.",
+      "flags": [
+        "measure"
+      ],
+      "stats": {
+        "missing": 19,
+        "distinct": 89,
+        "examples": [
+          "23,11,988",
+          "20,60,116",
+          "37,08,396"
+        ],
+        "min": 400000.0,
+        "median": 3603188.0,
+        "max": 2063454000.0
+      }
+    },
+    {
+      "name": "Bidder Name",
+      "view_column": "bidder_name",
+      "type": "string",
+      "description": "Name of the bidder in this row. Can be an individual's name.",
+      "flags": [
+        "personal_data_caution"
+      ],
+      "stats": {
+        "missing": 1,
+        "distinct": 91,
+        "examples": [
+          "Mwikwm Basumatary",
+          "DANI KHUNGUR WARY",
+          "Uttam Chakraborty"
+        ]
+      }
+    },
+    {
+      "name": "Awarded Value",
+      "view_column": "bid_value_inr",
+      "type": "number",
+      "unit": "INR",
+      "description": "Value of the bid in this row. Filled for rejected bids too, so only counts as spending when is_awarded is true (use awarded_amount_inr). For many goods / item-rate contracts it is a placeholder (0, 1) or a unit rate (awarded_value_suspect).",
+      "flags": [
+        "measure"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 90,
+        "examples": [
+          "2370817.0",
+          "2466411.0",
+          "2242628.0"
+        ],
+        "zeros": 16,
+        "sum_all_rows": 3269789064.27,
+        "sum_where_awarded": 2682941028.31
+      }
+    },
+    {
+      "name": "Status",
+      "view_column": "status",
+      "type": "category",
+      "description": "Result for the listed bid: Accepted-AOC, Rejected-AOC, Not Admitted-Fee/PreQual/Technical, Rejected-Finance, Rejected-Technical.",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 1,
+        "distinct": 6,
+        "values": {
+          "Accepted-AOC": 59,
+          "Rejected-AOC": 18,
+          "Not Admitted-Fee/PreQual/Technical": 15,
+          "Rejected-Finance": 13,
+          "Rejected-Technical": 6,
+          "": 1
+        }
+      }
+    },
+    {
+      "name": "Contract Date :",
+      "view_column": "contract_date",
+      "type": "date",
+      "description": "Contract date, format '07-Mar-2019'. Header has a trailing ' :'.",
+      "flags": [
+        "time"
+      ],
+      "stats": {
+        "missing": 5,
+        "distinct": 68,
+        "examples": [
+          "07-Mar-2019",
+          "28-Sep-2019",
+          "10-Oct-2019"
+        ]
+      }
+    },
+    {
+      "name": "Tender Stage",
+      "view_column": "tender_stage",
+      "type": "category",
+      "description": "'AOC' or blank.",
+      "stats": {
+        "missing": 35,
+        "distinct": 2,
+        "values": {
+          "AOC": 77,
+          "": 35
+        }
+      }
+    },
+    {
+      "name": "Department",
+      "view_column": "department",
+      "type": "string",
+      "description": "Issuing department chain, '||'-separated. department_top in the view is the first segment.",
+      "flags": [
+        "dimension"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 19,
+        "examples": [
+          "Bodoland Territorial Council||PWD-BTC",
+          "Bodoland Territorial Council-PWD||Director Cum CHD - PWD BTC",
+          "Public Works Building and NH Department||Chief Engineer-Building - PWBNH"
+        ]
+      }
+    },
+    {
+      "name": "is_mch_strict",
+      "view_column": "is_mch_strict",
+      "type": "boolean",
+      "description": "Passed the strict MCH keyword rule (mch_filter_strict in mch_tenders.py).",
+      "flags": [
+        "derived"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "values": {
+          "True": 100,
+          "False": 12
+        }
+      }
+    },
+    {
+      "name": "positive_keywords_dict",
+      "view_column": null,
+      "type": "json_string",
+      "description": "Python dict literal of MCH keyword hit counts. Audit trail for classification; not for analysis.",
+      "flags": [
+        "derived",
+        "audit"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 48,
+        "examples": [
+          "{'maternal': 0, 'maternity': 2, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy",
+          "{'maternal': 0, 'maternity': 1, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy",
+          "{'maternal': 0, 'maternity': 1, 'mother and child': 0, 'maternity and child health': 0, 'pregnant woman': 0, 'pregnant women': 0, 'pregnancy"
+        ]
+      }
+    },
+    {
+      "name": "negative_keywords_dict",
+      "view_column": null,
+      "type": "json_string",
+      "description": "Python dict literal of veterinary-term hit counts; all zero in this file.",
+      "flags": [
+        "derived",
+        "audit"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "examples": [
+          "{'veterinary': 0, 'husbandry': 0, 'animal': 0, 'livestock': 0}"
+        ]
+      }
+    },
+    {
+      "name": "Scheme",
+      "view_column": "scheme_tags",
+      "type": "string",
+      "description": "';'-separated scheme codes (see glossary.json). Use the mch_tender_schemes view to count by scheme.",
+      "flags": [
+        "derived",
+        "dimension",
+        "multi_value"
+      ],
+      "stats": {
+        "missing": 15,
+        "distinct": 18,
+        "examples": [
+          "MSDP",
+          "CHD_SCHEME",
+          "SOPD"
+        ]
+      }
+    },
+    {
+      "name": "is_awarded",
+      "view_column": "is_awarded",
+      "type": "boolean",
+      "description": "Status is an award status. Use as the filter for spending.",
+      "flags": [
+        "derived",
+        "filter"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "values": {
+          "True": 59,
+          "False": 53
+        }
+      }
+    },
+    {
+      "name": "is_mch_broad",
+      "view_column": null,
+      "type": "boolean",
+      "description": "Passed the broad MCH rule; always True because the file is filtered on it.",
+      "flags": [
+        "derived",
+        "constant"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 1,
+        "values": {
+          "True": 112
+        }
+      }
+    },
+    {
+      "name": "month",
+      "view_column": "result_month",
+      "type": "string",
+      "unit": "YYYY_MM",
+      "description": "Results batch the tender was scraped from. Matches the contract-date month for 93% of rows. Use for year or month trends.",
+      "flags": [
+        "derived",
+        "time"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 37,
+        "examples": [
+          "2019_03",
+          "2019_09",
+          "2019_10"
+        ]
+      }
+    },
+    {
+      "name": "tender_district_externalReference",
+      "view_column": null,
+      "type": "string",
+      "description": "District guessed from the reference number. Empty for every row.",
+      "flags": [
+        "derived",
+        "constant"
+      ],
+      "stats": {
+        "missing": 112,
+        "distinct": 1,
+        "examples": [
+          "NA"
+        ]
+      }
+    },
+    {
+      "name": "tender_district_title_description",
+      "view_column": null,
+      "type": "string",
+      "description": "District guessed from title and description text.",
+      "flags": [
+        "derived"
+      ],
+      "stats": {
+        "missing": 35,
+        "distinct": 25,
+        "examples": [
+          "KOKRAJHAR",
+          "UDALGURI",
+          "DIBRUGARH"
+        ]
+      }
+    },
+    {
+      "name": "tender_district_location",
+      "view_column": null,
+      "type": "string",
+      "description": "District guessed from the location field.",
+      "flags": [
+        "derived"
+      ],
+      "stats": {
+        "missing": 18,
+        "distinct": 26,
+        "examples": [
+          "KOKRAJHAR",
+          "DIBRUGARH",
+          "HAILAKANDI"
+        ]
+      }
+    },
+    {
+      "name": "BTC_flag",
+      "view_column": "is_btc",
+      "type": "boolean",
+      "description": "Tender issued by a Bodoland Territorial Council body.",
+      "flags": [
+        "derived",
+        "filter"
+      ],
+      "stats": {
+        "missing": 0,
+        "distinct": 2,
+        "values": {
+          "False": 95,
+          "True": 17
+        }
+      }
+    },
+    {
+      "name": "DISTRICT_FINALISED",
+      "view_column": "district",
+      "type": "category",
+      "description": "Final district. 'NA' = not geotagged, 'CONFLICT' = sources disagree; both become NULL in the view (see district_geotag_status). 'SIVSAGAR' becomes 'SIVASAGAR'.",
+      "flags": [
+        "derived",
+        "dimension",
+        "geography"
+      ],
+      "stats": {
+        "missing": 13,
+        "distinct": 27,
+        "values": {
+          "KAMRUP METRO": 33,
+          "KOKRAJHAR": 16,
+          "NA": 13,
+          "BARPETA": 8,
+          "DIBRUGARH": 5,
+          "CONFLICT": 3,
+          "MORIGAON": 3,
+          "NAGAON": 3,
+          "CACHAR": 3,
+          "HAILAKANDI": 2,
+          "TINSUKIA": 2,
+          "UDALGURI": 2,
+          "BONGAIGAON": 2,
+          "DHUBRI": 2,
+          "GOALPARA": 2,
+          "JORHAT": 2,
+          "KARIMGANJ": 1,
+          "NALBARI": 1,
+          "SONITPUR": 1,
+          "CHIRANG": 1,
+          "DHEMAJI": 1,
+          "DARRANG": 1,
+          "BAKSA": 1,
+          "GOLAGHAT": 1,
+          "SIVSAGAR": 1,
+          "LAKHIMPUR": 1,
+          "TAMULPUR": 1
+        }
+      }
+    }
+  ]
+}
