@@ -1,0 +1,177 @@
+{
+  "usecase_id": "assam_mch_tenders",
+  "schema_version": "1.0",
+  "title": "Using Data Analysis to Spot Gaps in Maternal and Child Healthcare Service Delivery",
+  "short_description": "Maternal and child health (MCH) tenders from Assam's e-procurement portal, 2019-2025, classified by scheme and geotagged to districts, to see where public MCH spending goes and how it relates to infant mortality.",
+  "question_it_answers": "Where, on what, and through which departments and schemes does Assam spend public procurement money on maternal and child health, and does that line up with district health needs?",
+
+  "links": {
+    "dataspace_usecase": "https://civicdataspace.in/usecases/312",
+    "dataspace_usecase_id": "312",
+    "superset_dashboard": {
+      "title": "Linking Public Spending to Maternal and Child Health Outcomes in Assam",
+      "public_url": "https://analytics.civicdataspace.in/superset/dashboard/p/xLKpnNXp6b2/",
+      "internal_url": "https://analytics.civicdataspace.in/superset/dashboard/4/?native_filters_key=BeTlfW7AKvI",
+      "superset_dashboard_id": 4
+    },
+    "repository_path": "analytics/Assam_MCH_analysis/TENDERS",
+    "source_portal": "https://assamtenders.gov.in/nicgep/app"
+  },
+
+  "dataspace_record": {
+    "_retrieved_from": "DataSpace GraphQL API (useCase pk 312), 2026-11-04",
+    "status": "PUBLISHED",
+    "running_status": "INITIATED",
+    "started_on": "2025-06-07",
+    "completed_on": null,
+    "last_modified": "2026-09-24",
+    "organization": "CivicDataLab",
+    "publishers": ["CivicDataLab"],
+    "supporting_organizations": ["CivicDataLab"],
+    "sectors": ["Public Finance", "Gender"],
+    "tags": ["Maternal Health", "Procurement Data", "Child Health"],
+    "sdgs": [
+      {"code": "SDG3", "name": "Good Health and Well-being"},
+      {"code": "SDG5", "name": "Gender Equality"},
+      {"code": "SDG10", "name": "Reduced Inequality"}
+    ],
+    "geographies": [{"name": "Assam", "type": "STATE"}]
+  },
+
+  "coverage": {
+    "spatial": "Assam, India; district level (35 districts as of the 2024-11 boundaries)",
+    "spatial_unit": "district",
+    "temporal": {
+      "results_from": "2019-03",
+      "results_to": "2025-10",
+      "published_from": "2017-12-15",
+      "published_to": "2025-08-29",
+      "note": "The '2019 to 2025' in titles is the period when results came out. Some tenders were first published in Dec 2017 and 2018."
+    },
+    "temporal_unit": "month (results batch); contract date for individual tenders",
+    "population": "MCH-related tenders published on assamtenders.gov.in. Tenders not on the portal are not included; the use case page says only about 20% of Assam's tenders are published."
+  },
+
+  "datasets": [
+    {
+      "dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9",
+      "title": "MCH Procurement data Assam 2019 to 2025",
+      "role": "primary",
+      "license": "CC BY-SA 4.0",
+      "in_repository": true,
+      "resources": [
+        {
+          "resource_id": "bc22644a-e7ff-4791-ac70-98d7322352e5",
+          "name": "MCH_tenderdata_Assam_2019_to_2025.csv",
+          "repo_path": "analytics/Assam_MCH_analysis/TENDERS/data/MCH_tenderdata_Assam_2019_to_2025.csv",
+          "profile": "dataset_profiles/mch_tenderdata_assam_2019_to_2025.json",
+          "analysis_view": "views.sql -> mch_tenders, mch_tender_schemes",
+          "v1_analysable": true
+        },
+        {
+          "resource_id": "76bb9002-671b-4883-aa45-679c647fc06d",
+          "name": "MCH_tenderdata_Assam_2019_to_2025_polygons.csv",
+          "repo_path": "analytics/Assam_MCH_analysis/TENDERS/data/MCH_tenderdata_Assam_2019_to_2025_polygons.csv",
+          "profile": "dataset_profiles/mch_tenderdata_assam_2019_to_2025_polygons.json",
+          "v1_analysable": false,
+          "why_not": "Map layer for the Superset deck.gl chart. Has 81 of the 112 tenders, so totals from it are wrong. Use for discovery and maps only."
+        }
+      ]
+    },
+    {
+      "dataset_id": "b2505437-cb9a-45f9-b85a-8a6f4868039d",
+      "title": "MCH Procurement District-wise Assam 2019 to 2023",
+      "role": "derived_aggregate",
+      "license": "CC BY-SA 4.0",
+      "in_repository": false,
+      "resources": [{"resource_id": "7597f563-d753-4623-a567-a871934a0a5f", "name": "MCH_Tendervalue_districtwise_Assam.csv"}],
+      "note": "Dashboard aggregate. Not in this repo, so not profiled; numbers may differ from the tender-level file (it ends in 2023)."
+    },
+    {
+      "dataset_id": "f9f95e8d-fe66-4f0f-9d38-0d4c266f143e",
+      "title": "MCH Procurement Scheme-wise Assam 2019 to 2023",
+      "role": "derived_aggregate",
+      "license": "CC BY-SA 4.0",
+      "in_repository": false,
+      "resources": [{"resource_id": "6296533c-c99f-4d8d-9bfd-c2030ef71e74", "name": "MCH_Tender_schemewise_Assam.csv"}]
+    },
+    {
+      "dataset_id": "4ec13774-1086-4eb1-b8cf-bd3329d46cf6",
+      "title": "MCH Procurement Department-wise Assam 2019 to 2023",
+      "role": "derived_aggregate",
+      "license": "CC BY-SA 4.0",
+      "in_repository": false,
+      "resources": [{"resource_id": "291684ac-3f23-4572-967d-13097239658b", "name": "MCH_Tender_departmentwise_Assam.csv"}]
+    },
+    {
+      "dataset_id": "88be5d92-ac1d-4305-9280-1b4f3595c1ce",
+      "title": "IMR District-wise Assam 2018-19 to 2022-23",
+      "role": "outcome_context",
+      "license": "CC BY-SA 4.0",
+      "in_repository": false,
+      "resources": [{"resource_id": "76a8d0cd-3852-4d06-b358-79d42f6581c7", "name": "IMR_districtwise_Assam_(2018-19 to 2022-23).csv"}],
+      "note": "Used on the dashboard to overlay infant mortality on tender value. Joining it to tenders is a cross-dataset question (not in v1)."
+    }
+  ],
+
+  "related_repository_data": [
+    {"path": "data-ecosystem/maps/Geojson/assam_district_2024-11.geojson", "why": "District boundaries; 'dtname' matches the district column in views.sql"},
+    {"path": "data-ecosystem/maps/Extra/ASSAM_VILLAGES_RC_DISTRICT_MAPPING.csv", "why": "Village, block, revenue circle to district lookup used for geotagging"},
+    {"path": "data-ecosystem/sources/ministry_of_health_and_family_welfare_mohfw/national_family_health_survey_5_district_factsheets", "why": "District MCH outcome indicators (NFHS-5)"},
+    {"path": "data-ecosystem/sources/ministry_of_health_and_family_welfare_mohfw/health_management_information_system/item_wise_hmis_report_district_level_assam", "why": "District MCH service delivery (HMIS)"},
+    {"path": "data-ecosystem/sources/ministry_of_women_and_child_development_mwcd/union_gender_budget_statement", "why": "Budget-side view of spending on women and children"}
+  ],
+
+  "methodology_summary": [
+    "Scrape monthly tender results from assamtenders.gov.in (TENDERS/scripts/scraper).",
+    "Flag MCH tenders with keyword rules on title, reference and work description; exclude veterinary and animal husbandry (TENDERS/scripts/mch_tenders.py).",
+    "Tag schemes by pattern matching (same script).",
+    "Assign a district from place names in the reference, title and location fields; mark CONFLICT when fields disagree (TENDERS/scripts/geocode_district.py).",
+    "Details: analysis_reference.md"
+  ],
+
+  "published_findings": {
+    "_provenance": "From the DataSpace use case narrative (2020-2023 analysis). Quote as the use case's findings, not as figures computed by the engine. Recompute from data where possible.",
+    "items": [
+      {"finding": "Procurement shifted from NHM-led programme purchases in 2021 to infrastructure procurement by Public Works (Building and NH) and Health and Family Welfare in 2022-23.", "recomputable": true},
+      {"finding": "Tenders were concentrated under NHM and SOPD; LAQSHYA, RCH and MSDP saw limited activity.", "recomputable": true, "caveat": "In the current tagging, LAQSHYA is the second most common scheme tag (28 tenders, all also tagged NHM; NHM has 49), because generic labour-room phrases match it. The finding and the data disagree; say so if asked."},
+      {"finding": "Dibrugarh, Jorhat and Kamrup Metro have higher IMR, although Kamrup Metro has some of the highest procurement spending, driven by a few large infrastructure projects.", "recomputable": false, "needs": "IMR dataset (cross-dataset)"},
+      {"finding": "Bongaigaon and Dhemaji received modest tender values but show better IMR.", "recomputable": false, "needs": "IMR dataset (cross-dataset)"},
+      {"finding": "Higher spending alone does not guarantee better health indicators; efficiency, relevance and local delivery capacity matter.", "recomputable": false, "type": "interpretation"},
+      {"finding": "Only about 20% of Assam's tenders are published.", "recomputable": false, "type": "external_claim"},
+      {"finding": "Contract award information is delayed by about 250 days on average against a 30-day disclosure rule.", "recomputable": false, "type": "external_claim", "caveat": "Not the same as days_publish_to_contract in views.sql."},
+      {"finding": "Location fields, scheme names and work categories are inconsistent, which makes linking spending to interventions hard.", "recomputable": false, "type": "data_quality"}
+    ]
+  },
+
+  "intended_users": [
+    "NHM and Health Department officials planning district MCH infrastructure",
+    "Finance and planning officials linking spending to outcomes",
+    "CSOs and journalists tracking public MCH spending",
+    "Researchers studying procurement transparency"
+  ],
+
+  "limitations": [
+    "Only tenders published on the state portal; total spending is understated.",
+    "19 of 59 awarded tenders (mostly goods: drugs, equipment, kits) record ₹0, ₹1 or a unit rate instead of the contract value, so goods and Health and Family Welfare spending are large undercounts (awarded_value_suspect in views.sql).",
+    "MCH classification is keyword based; it misses tenders with vague titles and may include weak matches.",
+    "13 tenders have no district and 3 have conflicting districts.",
+    "Scheme tags are pattern matches, not official scheme codes; CHD_SCHEME is a known false positive.",
+    "One tender (GMCH 500-bed Mother and Child Hospital, ₹214 crore) is about 80% of total awarded value; totals, trends and district rankings shift a lot with or without it.",
+    "Counts per district and per year are small (often 1-5 tenders)."
+  ],
+
+  "sensitivity": {
+    "personal_data": "bidder_name includes some individual contractors. It is public procurement information, but do not rank, profile or make claims about named individuals. Aggregate by department, scheme or district instead.",
+    "framing": "Do not suggest wrongdoing from single-bid tenders, rejections or delays."
+  },
+
+  "files_in_this_folder": {
+    "usecase.json": "This card: links, IDs, coverage, findings, limitations",
+    "dataset_profiles/": "Per-resource profiles: columns, types, units, missing values, coverage, quirks",
+    "views.sql": "DuckDB views the analysis planner queries (mch_tenders, mch_tender_schemes)",
+    "analysis_reference.md": "Method, metric definitions, SQL patterns and caveats",
+    "glossary.json": "Scheme codes, departments, procurement terms, units, district name variants",
+    "question_bank.json": "Golden questions for all four intents, with SQL and executed expected results"
+  }
+}

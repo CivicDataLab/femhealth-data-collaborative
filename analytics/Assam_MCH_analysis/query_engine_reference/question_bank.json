@@ -1,0 +1,935 @@
+{
+  "usecase_id": "assam_mch_tenders",
+  "version": "1.0",
+  "generated_on": "2026-11-04",
+  "how_expected_results_were_produced": "Each analyse question's sql was executed with DuckDB against views.sql over TENDERS/data/MCH_tenderdata_Assam_2019_to_2025.csv. Regenerate if the data file changes (see sha256 in dataset_profiles).",
+  "language_codes": {
+    "en": "English",
+    "hi": "Hindi",
+    "as": "Assamese",
+    "hinglish": "Hindi-English mix in Latin script"
+  },
+  "language_review_status": "Hindi, Assamese and Hinglish variants are machine drafted and need native-speaker review before use as evaluation gold.",
+  "questions": [
+    {
+      "id": "disc-01",
+      "intent": "discover",
+      "question": "Is there any data on maternal and child health spending in Assam?",
+      "variants": {
+        "hi": "क्या असम में मातृ एवं शिशु स्वास्थ्य पर खर्च का कोई डेटा है?",
+        "hinglish": "Assam me maternal and child health pe kitna kharcha hua, uska data hai kya?",
+        "as": "অসমত মাতৃ আৰু শিশু স্বাস্থ্যৰ খৰচৰ কোনো তথ্য আছেনে?"
+      },
+      "expected_datasets": [
+        {
+          "dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9",
+          "rank": 1
+        },
+        {
+          "dataset_id": "f9f95e8d-fe66-4f0f-9d38-0d4c266f143e"
+        },
+        {
+          "dataset_id": "4ec13774-1086-4eb1-b8cf-bd3329d46cf6"
+        },
+        {
+          "dataset_id": "b2505437-cb9a-45f9-b85a-8a6f4868039d"
+        }
+      ],
+      "expected_answer": "Top result is 'MCH Procurement data Assam 2019 to 2025' (public tenders, not budget allocations). Mention the Union Gender Budget Statement in data-ecosystem as a budget-side source."
+    },
+    {
+      "id": "disc-02",
+      "intent": "discover",
+      "question": "District-wise tender data for maternal health in Assam",
+      "variants": {
+        "hinglish": "Assam district wise MCH tender data chahiye"
+      },
+      "expected_datasets": [
+        {
+          "dataset_id": "b2505437-cb9a-45f9-b85a-8a6f4868039d",
+          "rank": 1
+        },
+        {
+          "dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9"
+        },
+        {
+          "dataset_id": "93a26985-5f8d-447a-b6b3-506e2a70c5c9",
+          "resource_id": "76bb9002-671b-4883-aa45-679c647fc06d"
+        }
+      ],
+      "expected_answer": "District-wise aggregate dataset, plus the tender-level dataset whose district column supports any district cut."
+    },
+    {
+      "id": "disc-03",
+      "intent": "discover",
+      "question": "Infant mortality rate by district in Assam",
+      "variants": {
+        "hi": "असम में जिलेवार शिशु मृत्यु दर"
+      },
+      "expected_datasets": [
+        {
+          "dataset_id": "88be5d92-ac1d-4305-9280-1b4f3595c1ce",
+          "rank": 1
+        }
+      ],
+      "expected_answer": "'IMR District-wise Assam 2018-19 to 2022-23'. Mention NFHS-5 district factsheets and HMIS as related health-outcome sources."
+    },
+    {
+      "id": "disc-04",
+      "intent": "discover",
+      "question": "Which dashboards show public spending on mothers and children in Assam?",
+      "expected_answer": "Superset dashboard 'Linking Public Spending to Maternal and Child Health Outcomes in Assam' (https://analytics.civicdataspace.in/superset/dashboard/p/xLKpnNXp6b2/) and the use case page https://civicdataspace.in/usecases/312."
+    },
+    {
+      "id": "und-01",
+      "intent": "understand",
+      "question": "What time period does the MCH tender dataset cover?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT min(published_at)::DATE AS first_published, max(published_at)::DATE AS last_published,\n       min(contract_date) AS first_contract, max(contract_date) AS last_contract,\n       min(result_month) AS first_result_month, max(result_month) AS last_result_month\nFROM mch_tenders",
+      "expected_result": {
+        "columns": [
+          "first_published",
+          "last_published",
+          "first_contract",
+          "last_contract",
+          "first_result_month",
+          "last_result_month"
+        ],
+        "rows": [
+          [
+            "2017-12-15",
+            "2025-08-29",
+            "2019-03-07",
+            "2025-10-07",
+            "2019_03",
+            "2025_10"
+          ]
+        ]
+      },
+      "must_mention": [
+        "The title says 2019 to 2025, but some tenders were published in Dec 2017 and 2018; the 2019 to 2025 range refers to when results (contracts) came out.",
+        "There is no data for most months; 37 result months contain tenders."
+      ]
+    },
+    {
+      "id": "und-02",
+      "intent": "understand",
+      "question": "What does one row in the MCH tender dataset represent?",
+      "answer_template": "dataset_overview",
+      "expected_answer": "One MCH-related tender from the Assam e-procurement portal (assamtenders.gov.in), with the bidder and bid value recorded at the results stage. 112 tenders, 112 unique tender IDs. A tender reference (e.g. 'TN 109/1') can be shared by several tenders."
+    },
+    {
+      "id": "und-03",
+      "intent": "understand",
+      "question": "Can I add up the Awarded Value column to get total spending?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT is_awarded, count(*) AS tenders, sum(bid_value_inr) AS sum_bid_value_inr\nFROM mch_tenders GROUP BY is_awarded ORDER BY is_awarded DESC",
+      "expected_result": {
+        "columns": [
+          "is_awarded",
+          "tenders",
+          "sum_bid_value_inr"
+        ],
+        "rows": [
+          [
+            true,
+            59,
+            2682941028.31
+          ],
+          [
+            false,
+            53,
+            586848035.96
+          ]
+        ]
+      },
+      "must_mention": [
+        "No. 'Awarded Value' holds the listed bid's value even for rejected or not-admitted tenders. Sum it only where is_awarded is true (awarded_amount_inr in the view).",
+        "One tender, the 500-bed Mother and Child Hospital at GMCH (₹214 crore), is about 80% of all awarded value."
+      ]
+    },
+    {
+      "id": "und-04",
+      "intent": "understand",
+      "question": "How were tenders identified as maternal and child health related?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT is_mch_strict, count(*) AS tenders FROM mch_tenders GROUP BY 1 ORDER BY 1 DESC",
+      "expected_result": {
+        "columns": [
+          "is_mch_strict",
+          "tenders"
+        ],
+        "rows": [
+          [
+            true,
+            100
+          ],
+          [
+            false,
+            12
+          ]
+        ]
+      },
+      "expected_answer": "Keyword rules in TENDERS/scripts/mch_tenders.py run on the tender title, reference and work description: core MCH terms (maternity, labour room, newborn, SNCU...), ANC/PNC, immunisation and child health, nutrition and named schemes. Tenders mentioning veterinary/animal husbandry/livestock are excluded. A broader rule also keeps health-department tenders tagged with an MCH scheme or MCH infrastructure words. 100 of the 112 tenders pass the strict rule."
+    },
+    {
+      "id": "und-05",
+      "intent": "understand",
+      "question": "How many tenders could not be assigned to a district?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT district_geotag_status, count(*) AS tenders FROM mch_tenders GROUP BY 1 ORDER BY 2 DESC",
+      "expected_result": {
+        "columns": [
+          "district_geotag_status",
+          "tenders"
+        ],
+        "rows": [
+          [
+            "geotagged",
+            96
+          ],
+          [
+            "not_geotagged",
+            13
+          ],
+          [
+            "conflict",
+            3
+          ]
+        ]
+      },
+      "must_mention": [
+        "Districts are inferred from place names in the text, not reported by the portal.",
+        "Conflict means two text fields pointed to different districts."
+      ]
+    },
+    {
+      "id": "und-06",
+      "intent": "understand",
+      "question": "Does this dataset show how much the government budgeted for maternal health?",
+      "answer_template": "dataset_overview",
+      "expected_answer": "No. It covers tenders published on the state e-procurement portal, which is a subset of spending. The use case notes only about 20% of Assam's tenders are published. Budget allocations are in the Union Gender Budget Statement (data-ecosystem/sources/ministry_of_women_and_child_development_mwcd)."
+    },
+    {
+      "id": "und-07",
+      "intent": "understand",
+      "question": "What do the scheme codes like LAQSHYA, SOPD and MSDP mean?",
+      "answer_template": "dataset_overview",
+      "expected_answer": "Answer from glossary.json. LAQSHYA = Labour room Quality Improvement Initiative; SOPD = State Owned Priority Development; MSDP = Multi-sectoral Development Programme; HFW = Health and Family Welfare Department (a department tag, not a scheme)."
+    },
+    {
+      "id": "ana-01",
+      "intent": "analyse",
+      "question": "How many MCH tenders were awarded in Assam and what was their total value?",
+      "variants": {
+        "hinglish": "Assam me kitne MCH tenders award hue aur total value kitni thi?",
+        "hi": "असम में कितने मातृ-शिशु स्वास्थ्य टेंडर दिए गए और उनका कुल मूल्य कितना था?"
+      },
+      "answer_template": "trend",
+      "sql": "SELECT count(*) AS tenders_total,\n       count(*) FILTER (WHERE is_awarded) AS tenders_awarded,\n       sum(awarded_amount_inr) AS awarded_amount_inr,\n       round(sum(awarded_amount_inr) / 1e7, 2) AS awarded_amount_crore\nFROM mch_tenders",
+      "expected_result": {
+        "columns": [
+          "tenders_total",
+          "tenders_awarded",
+          "awarded_amount_inr",
+          "awarded_amount_crore"
+        ],
+        "rows": [
+          [
+            112,
+            59,
+            2682941028.31,
+            268.29
+          ]
+        ]
+      },
+      "must_mention": [
+        "Only published tenders on assamtenders.gov.in.",
+        "One ₹214 crore hospital tender is most of the total."
+      ]
+    },
+    {
+      "id": "ana-02",
+      "intent": "analyse",
+      "question": "How did awarded MCH tender value change year by year?",
+      "answer_template": "trend",
+      "sql": "SELECT result_year, count(*) AS tenders, count(*) FILTER (WHERE is_awarded) AS awarded,\n       round(coalesce(sum(awarded_amount_inr), 0) / 1e7, 2) AS awarded_crore\nFROM mch_tenders GROUP BY 1 ORDER BY 1",
+      "expected_result": {
+        "columns": [
+          "result_year",
+          "tenders",
+          "awarded",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            2019,
+            24,
+            15,
+            4.09
+          ],
+          [
+            2020,
+            3,
+            1,
+            214.03
+          ],
+          [
+            2021,
+            22,
+            6,
+            9.81
+          ],
+          [
+            2022,
+            7,
+            4,
+            1.88
+          ],
+          [
+            2023,
+            21,
+            12,
+            14.39
+          ],
+          [
+            2024,
+            20,
+            13,
+            23.43
+          ],
+          [
+            2025,
+            15,
+            8,
+            0.67
+          ]
+        ]
+      },
+      "must_mention": [
+        "Year is the year results came out, not when the tender was published.",
+        "2020 is dominated by a single ₹214 crore tender; do not describe it as a spending peak without saying so.",
+        "Small counts per year: avoid percentage-change language."
+      ]
+    },
+    {
+      "id": "ana-03",
+      "intent": "analyse",
+      "question": "Which districts received the most awarded MCH tender value?",
+      "variants": {
+        "hinglish": "Sabse zyada MCH tender paisa kaunse district ko mila?"
+      },
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT coalesce(district, 'Not geotagged / conflict') AS district,\n       count(*) AS awarded_tenders, round(sum(awarded_amount_inr) / 1e7, 2) AS awarded_crore\nFROM mch_tenders WHERE is_awarded\nGROUP BY 1 ORDER BY sum(awarded_amount_inr) DESC LIMIT 10",
+      "expected_result": {
+        "columns": [
+          "district",
+          "awarded_tenders",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "KAMRUP METRO",
+            18,
+            218.04
+          ],
+          [
+            "HAILAKANDI",
+            2,
+            20.07
+          ],
+          [
+            "DHUBRI",
+            1,
+            12.25
+          ],
+          [
+            "Not geotagged / conflict",
+            6,
+            7.27
+          ],
+          [
+            "BONGAIGAON",
+            2,
+            3.29
+          ],
+          [
+            "KOKRAJHAR",
+            9,
+            2.96
+          ],
+          [
+            "DIBRUGARH",
+            3,
+            1.62
+          ],
+          [
+            "NAGAON",
+            3,
+            0.62
+          ],
+          [
+            "UDALGURI",
+            2,
+            0.57
+          ],
+          [
+            "TINSUKIA",
+            2,
+            0.52
+          ]
+        ]
+      },
+      "must_mention": [
+        "Kamrup Metro's total is mainly the GMCH Mother and Child Hospital.",
+        "Districts with 1 or 2 tenders should not be ranked as meaningful differences."
+      ]
+    },
+    {
+      "id": "ana-04",
+      "intent": "analyse",
+      "question": "Which districts lead in awarded MCH value if we exclude the GMCH Mother and Child Hospital?",
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT district, count(*) AS awarded_tenders, round(sum(awarded_amount_inr) / 1e7, 2) AS awarded_crore\nFROM mch_tenders\nWHERE is_awarded AND tender_id <> '2020_PWBNH_17202_1' AND district IS NOT NULL\nGROUP BY 1 ORDER BY sum(awarded_amount_inr) DESC LIMIT 5",
+      "expected_result": {
+        "columns": [
+          "district",
+          "awarded_tenders",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "HAILAKANDI",
+            2,
+            20.07
+          ],
+          [
+            "DHUBRI",
+            1,
+            12.25
+          ],
+          [
+            "KAMRUP METRO",
+            17,
+            4.01
+          ],
+          [
+            "BONGAIGAON",
+            2,
+            3.29
+          ],
+          [
+            "KOKRAJHAR",
+            9,
+            2.96
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ana-05",
+      "intent": "analyse",
+      "question": "Which departments issued the most MCH tenders?",
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT department_top, count(*) AS tenders, count(*) FILTER (WHERE is_awarded) AS awarded,\n       round(coalesce(sum(awarded_amount_inr), 0) / 1e7, 2) AS awarded_crore\nFROM mch_tenders GROUP BY 1 ORDER BY tenders DESC",
+      "expected_result": {
+        "columns": [
+          "department_top",
+          "tenders",
+          "awarded",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "National Health Mission",
+            43,
+            17,
+            23.0
+          ],
+          [
+            "Health and Family Welfare Department",
+            26,
+            18,
+            0.2
+          ],
+          [
+            "Public Works Building and NH Department",
+            24,
+            13,
+            239.79
+          ],
+          [
+            "Bodoland Territorial Council",
+            11,
+            8,
+            2.86
+          ],
+          [
+            "Bodoland Territorial Council-PWD",
+            6,
+            2,
+            0.52
+          ],
+          [
+            "Public Works Roads Department",
+            1,
+            1,
+            1.93
+          ],
+          [
+            "Cooperation Department",
+            1,
+            0,
+            0.0
+          ]
+        ]
+      },
+      "must_mention": [
+        "Bodoland Territorial Council appears under two spellings of its top-level department name.",
+        "Health and Family Welfare's awarded value is understated: most of its awards are drug and equipment contracts recorded as ₹0, ₹1 or unit rates (awarded_value_suspect). Compare departments by tender count, not value."
+      ]
+    },
+    {
+      "id": "ana-06",
+      "intent": "analyse",
+      "question": "Which schemes are most MCH tenders tagged with?",
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT scheme, count(*) AS tenders, count(*) FILTER (WHERE is_awarded) AS awarded\nFROM mch_tender_schemes GROUP BY 1 ORDER BY tenders DESC, scheme",
+      "expected_result": {
+        "columns": [
+          "scheme",
+          "tenders",
+          "awarded"
+        ],
+        "rows": [
+          [
+            "NHM",
+            49,
+            21
+          ],
+          [
+            "HFW",
+            28,
+            20
+          ],
+          [
+            "LAQSHYA",
+            28,
+            12
+          ],
+          [
+            "UIP",
+            16,
+            6
+          ],
+          [
+            "MSDP",
+            7,
+            4
+          ],
+          [
+            "CHD_SCHEME",
+            6,
+            2
+          ],
+          [
+            "SOPD",
+            6,
+            4
+          ],
+          [
+            "JSSK",
+            3,
+            2
+          ],
+          [
+            "RCH",
+            3,
+            1
+          ],
+          [
+            "RBSK",
+            2,
+            0
+          ],
+          [
+            "ASHA",
+            1,
+            1
+          ]
+        ]
+      },
+      "must_mention": [
+        "A tender can carry more than one scheme tag; scheme counts add up to more than the number of tenders.",
+        "15 tenders have no scheme tag.",
+        "HFW and PWD_NH are department tags, not schemes.",
+        "CHD_SCHEME is a false positive for BTC tenders: 'CHD' in 'Director Cum CHD - PWD BTC' is an office name, not the Congenital Heart Disease scheme."
+      ]
+    },
+    {
+      "id": "ana-07",
+      "intent": "analyse",
+      "question": "What were the five largest awarded MCH tenders?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT tender_id, left(tender_title, 120) AS tender_title, district, contract_date,\n       round(awarded_amount_inr / 1e7, 2) AS awarded_crore\nFROM mch_tenders WHERE is_awarded ORDER BY awarded_amount_inr DESC LIMIT 5",
+      "expected_result": {
+        "columns": [
+          "tender_id",
+          "tender_title",
+          "district",
+          "contract_date",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "2020_PWBNH_17202_1",
+            "Mother and Child Hospital (500 bedded) at Gauhati Medical College and Hospital, Guwahati under SOPD-ODS for the FY 2019-",
+            "KAMRUP METRO",
+            "2020-12-05",
+            214.03
+          ],
+          [
+            "2023_NHM_31911_1",
+            "Construction of Maternal and Child Health Wing at S K Roy Civil Hospital in Hailakandi district under NHM Assam",
+            "HAILAKANDI",
+            "2024-03-07",
+            20.0
+          ],
+          [
+            "2023_PWBNH_31611_1",
+            "Construction of 100 bedded Maternity Child Health wing with quarters at Dhubri Civil Hospital under National Health Miss",
+            "DHUBRI",
+            "2023-12-06",
+            12.25
+          ],
+          [
+            "2021_PWBNH_19864_1",
+            "Additional work for Construction of 100 bedded Maternity Child Health Wing with accommodation of Staffs at existing Nort",
+            null,
+            "2021-03-12",
+            6.5
+          ],
+          [
+            "2021_PWBNH_22170_1",
+            "Construction of Nutritional Rehabilitation Centre and Mother and Child ward in the premises of Bongaigaon Civil Hospital",
+            "BONGAIGAON",
+            "2021-08-12",
+            3.08
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ana-08",
+      "intent": "analyse",
+      "question": "What share of MCH tenders were rejected or not admitted?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT coalesce(status, 'Missing') AS status, count(*) AS tenders,\n       round(100.0 * count(*) / sum(count(*)) OVER (), 1) AS pct\nFROM mch_tenders GROUP BY 1 ORDER BY tenders DESC",
+      "expected_result": {
+        "columns": [
+          "status",
+          "tenders",
+          "pct"
+        ],
+        "rows": [
+          [
+            "Accepted-AOC",
+            59,
+            52.7
+          ],
+          [
+            "Rejected-AOC",
+            18,
+            16.1
+          ],
+          [
+            "Not Admitted-Fee/PreQual/Technical",
+            15,
+            13.4
+          ],
+          [
+            "Rejected-Finance",
+            13,
+            11.6
+          ],
+          [
+            "Rejected-Technical",
+            6,
+            5.4
+          ],
+          [
+            "Missing",
+            1,
+            0.9
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ana-09",
+      "intent": "analyse",
+      "question": "How long does it take from publishing an MCH tender to signing the contract?",
+      "answer_template": "trend",
+      "sql": "SELECT count(*) AS tenders_with_dates,\n       round(median(days_publish_to_contract)) AS median_days,\n       round(avg(days_publish_to_contract)) AS mean_days,\n       min(days_publish_to_contract) AS min_days, max(days_publish_to_contract) AS max_days\nFROM mch_tenders WHERE is_awarded AND days_publish_to_contract IS NOT NULL",
+      "expected_result": {
+        "columns": [
+          "tenders_with_dates",
+          "median_days",
+          "mean_days",
+          "min_days",
+          "max_days"
+        ],
+        "rows": [
+          [
+            58,
+            173.0,
+            209.0,
+            20,
+            1496
+          ]
+        ]
+      },
+      "must_mention": [
+        "This is publish-to-contract time, not the contract-award disclosure delay (~250 days on average) cited on the use case page; do not present them as the same measure."
+      ]
+    },
+    {
+      "id": "ana-10",
+      "intent": "analyse",
+      "question": "How many MCH tenders received only one bid?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT bids_received, count(*) AS tenders, count(*) FILTER (WHERE is_awarded) AS awarded\nFROM mch_tenders GROUP BY 1 ORDER BY 1",
+      "expected_result": {
+        "columns": [
+          "bids_received",
+          "tenders",
+          "awarded"
+        ],
+        "rows": [
+          [
+            1,
+            9,
+            3
+          ],
+          [
+            2,
+            103,
+            56
+          ]
+        ]
+      },
+      "must_mention": [
+        "Do not draw conclusions about wrongdoing from bid counts."
+      ]
+    },
+    {
+      "id": "ana-11",
+      "intent": "analyse",
+      "question": "How does MCH procurement split between construction works and goods?",
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT tender_category, count(*) AS tenders, count(*) FILTER (WHERE is_awarded) AS awarded,\n       count(*) FILTER (WHERE awarded_value_suspect) AS awarded_value_suspect,\n       round(coalesce(sum(awarded_amount_inr), 0) / 1e7, 2) AS awarded_crore\nFROM mch_tenders GROUP BY 1 ORDER BY tenders DESC",
+      "expected_result": {
+        "columns": [
+          "tender_category",
+          "tenders",
+          "awarded",
+          "awarded_value_suspect",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "Works",
+            73,
+            36,
+            1,
+            267.1
+          ],
+          [
+            "Goods",
+            38,
+            23,
+            18,
+            1.2
+          ],
+          [
+            "Services",
+            1,
+            0,
+            0,
+            0.0
+          ]
+        ]
+      },
+      "must_mention": [
+        "Goods value is not measurable from awarded value: most awarded goods tenders record ₹0, ₹1 or a unit rate. Say the goods figure is a large undercount and give counts instead."
+      ]
+    },
+    {
+      "id": "ana-14",
+      "intent": "analyse",
+      "question": "How many awarded tenders have an unreliable awarded value?",
+      "answer_template": "dataset_overview",
+      "sql": "SELECT tender_category, department_top, count(*) AS awarded_value_suspect,\n       round(sum(tender_value_inr) / 1e7, 2) AS estimated_value_crore_where_known,\n       count(tender_value_inr) AS with_estimate\nFROM mch_tenders WHERE awarded_value_suspect\nGROUP BY 1, 2 ORDER BY 3 DESC",
+      "expected_result": {
+        "columns": [
+          "tender_category",
+          "department_top",
+          "awarded_value_suspect",
+          "estimated_value_crore_where_known",
+          "with_estimate"
+        ],
+        "rows": [
+          [
+            "Goods",
+            "Health and Family Welfare Department",
+            15,
+            18.7,
+            5
+          ],
+          [
+            "Goods",
+            "National Health Mission",
+            3,
+            2.23,
+            3
+          ],
+          [
+            "Works",
+            "Public Works Building and NH Department",
+            1,
+            0.31,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ana-12",
+      "intent": "analyse",
+      "question": "How much MCH tender value was awarded in Kokrajhar and by whom?",
+      "variants": {
+        "hinglish": "Kokrajhar me MCH tenders ka kitna paisa award hua?"
+      },
+      "answer_template": "cross_region_comparison",
+      "sql": "SELECT department_top, count(*) AS awarded_tenders, round(sum(awarded_amount_inr) / 1e5, 2) AS awarded_lakh\nFROM mch_tenders WHERE is_awarded AND district = 'KOKRAJHAR'\nGROUP BY 1 ORDER BY awarded_lakh DESC",
+      "expected_result": {
+        "columns": [
+          "department_top",
+          "awarded_tenders",
+          "awarded_lakh"
+        ],
+        "rows": [
+          [
+            "Bodoland Territorial Council",
+            7,
+            263.86
+          ],
+          [
+            "National Health Mission",
+            1,
+            17.07
+          ],
+          [
+            "Bodoland Territorial Council-PWD",
+            1,
+            14.93
+          ]
+        ]
+      },
+      "must_mention": [
+        "Kokrajhar is in the Bodoland Territorial Region; BTC departments procure separately from state departments."
+      ]
+    },
+    {
+      "id": "ana-13",
+      "intent": "analyse",
+      "question": "MCH tenders awarded by Indian fiscal year",
+      "answer_template": "trend",
+      "sql": "SELECT contract_fiscal_year, count(*) AS awarded_tenders, round(sum(awarded_amount_inr) / 1e7, 2) AS awarded_crore\nFROM mch_tenders WHERE is_awarded AND contract_fiscal_year IS NOT NULL\nGROUP BY 1 ORDER BY 1",
+      "expected_result": {
+        "columns": [
+          "contract_fiscal_year",
+          "awarded_tenders",
+          "awarded_crore"
+        ],
+        "rows": [
+          [
+            "2018-19",
+            3,
+            0.71
+          ],
+          [
+            "2019-20",
+            12,
+            3.38
+          ],
+          [
+            "2020-21",
+            6,
+            220.76
+          ],
+          [
+            "2021-22",
+            2,
+            3.3
+          ],
+          [
+            "2022-23",
+            4,
+            2.66
+          ],
+          [
+            "2023-24",
+            12,
+            35.32
+          ],
+          [
+            "2024-25",
+            12,
+            1.5
+          ],
+          [
+            "2025-26",
+            7,
+            0.67
+          ]
+        ]
+      }
+    },
+    {
+      "id": "oos-01",
+      "intent": "out_of_scope",
+      "question": "Did higher MCH spending reduce infant mortality in Dibrugarh?",
+      "expected_datasets": [
+        {
+          "dataset_id": "88be5d92-ac1d-4305-9280-1b4f3595c1ce"
+        }
+      ],
+      "expected_response": "Decline the causal claim. This dataset shows tenders, not outcomes, and v1 answers single-dataset questions only. Point to the IMR district-wise dataset and the Superset dashboard, which places tender value next to IMR. The use case itself concludes that higher spending alone does not guarantee better IMR."
+    },
+    {
+      "id": "oos-02",
+      "intent": "out_of_scope",
+      "question": "Give me the phone number of the contractor who built the Dhubri MCH wing.",
+      "expected_response": "Decline. The dataset has no contact details, and the engine does not look up personal information about named individuals."
+    },
+    {
+      "id": "oos-03",
+      "intent": "out_of_scope",
+      "question": "How much did Meghalaya spend on maternal health tenders?",
+      "expected_response": "Out of coverage: FemHealth data covers Assam only."
+    },
+    {
+      "id": "oos-04",
+      "intent": "out_of_scope",
+      "question": "Predict how much Assam will spend on MCH tenders in 2027.",
+      "expected_response": "Decline forecasting. Offer the year-wise trend (ana-02) with its caveats instead."
+    },
+    {
+      "id": "oos-05",
+      "intent": "out_of_scope",
+      "question": "Which contractors are corrupt?",
+      "expected_response": "Decline. Procurement records cannot establish wrongdoing. Offer factual views such as single-bid tenders (ana-10) or rejection rates (ana-08), with neutral framing."
+    }
+  ]
+}

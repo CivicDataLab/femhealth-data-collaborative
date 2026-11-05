@@ -1,0 +1,90 @@
+{
+  "usecase_id": "assam_mch_tenders",
+  "purpose": "Definitions the router, query parser and narrator need to read user questions and the scheme_tags / department columns correctly. Terms are matched case-insensitively.",
+  "scheme_tags": {
+    "_note": "Values found in the 'Scheme' column (scheme_tags in views.sql). Patterns come from SCHEMES_IDENTIFIER_BASE in TENDERS/scripts/mch_tenders.py. 'kind' says whether the tag is a programme or a department marker.",
+    "UIP": {"name": "Universal Immunization Programme", "kind": "scheme", "level": "central", "covers": "Vaccines, cold chain (ILR, deep freezers, vaccine carriers, cold boxes), immunisation infrastructure"},
+    "ASHA": {"name": "Accredited Social Health Activist programme", "kind": "scheme", "level": "central", "covers": "ASHA worker training, incentives, modules, reporting tools"},
+    "JSY": {"name": "Janani Suraksha Yojana", "kind": "scheme", "level": "central", "covers": "Institutional delivery cash incentives, referral transport for pregnant women"},
+    "JSSK": {"name": "Janani Shishu Suraksha Karyakram", "kind": "scheme", "level": "central", "covers": "Free delivery and C-section, free drugs, diagnostics, diet and transport for mother and newborn; Samahar kits"},
+    "PMSMA": {"name": "Pradhan Mantri Surakshit Matritva Abhiyan", "kind": "scheme", "level": "central", "covers": "Fixed-day (9th of month) antenatal check-ups"},
+    "LAQSHYA": {"name": "Labour room Quality Improvement Initiative (LaQshya)", "kind": "scheme", "level": "central", "covers": "Labour room and maternity OT upgrades and certification", "quirk": "Also matched by generic phrases such as 'labour room strengthening', so many labour-room construction tenders carry this tag."},
+    "PMMVY": {"name": "Pradhan Mantri Matru Vandana Yojana", "kind": "scheme", "level": "central", "covers": "Maternity benefit cash transfer for the first child"},
+    "NMBS": {"name": "National Maternity Benefit Scheme", "kind": "scheme", "level": "central", "covers": "Maternal nutritional cash support"},
+    "RBSK": {"name": "Rashtriya Bal Swasthya Karyakram", "kind": "scheme", "level": "central", "covers": "Child health screening (0-18 years), District Early Intervention Centres (DEIC)"},
+    "POSHAN_ABHIYAAN": {"name": "POSHAN Abhiyaan", "kind": "scheme", "level": "central", "covers": "Nutrition monitoring, growth monitoring devices, anganwadi ICT"},
+    "SUMAN": {"name": "Surakshit Matritva Aashwasan (SUMAN)", "kind": "scheme", "level": "central", "covers": "Respectful, zero-expense maternity and newborn care"},
+    "MCTS": {"name": "Mother and Child Tracking System", "kind": "scheme", "level": "central", "covers": "Digital ANC/PNC and immunisation tracking"},
+    "RCH": {"name": "Reproductive and Child Health programme", "kind": "scheme", "level": "central", "covers": "Broad maternal and child service strengthening"},
+    "NHM": {"name": "National Health Mission (incl. NRHM)", "kind": "scheme", "level": "central", "covers": "Health system strengthening, CHC/PHC upgrades, MCH wings", "quirk": "Also set when the procuring department is NHM, so it partly duplicates department_top."},
+    "MSDP": {"name": "Multi-sectoral Development Programme", "kind": "scheme", "level": "central", "covers": "Infrastructure in minority concentration areas (e.g. labour rooms in Kokrajhar blocks)"},
+    "SOPD": {"name": "State Owned Priority Development", "kind": "scheme", "level": "state", "covers": "State-funded priority infrastructure (e.g. GMCH Mother and Child Hospital under SOPD-ODS)"},
+    "MAMONI": {"name": "Mamoni scheme (Assam)", "kind": "scheme", "level": "state", "covers": "Cash for antenatal nutrition"},
+    "MAMATA_KIT": {"name": "Mamata kit distribution (Assam)", "kind": "scheme", "level": "state", "covers": "Mother and newborn kits after delivery"},
+    "SNEHA_SPARSHA": {"name": "Sneha Sparsha (Assam)", "kind": "scheme", "level": "state", "covers": "Financial aid for specialty treatment of children"},
+    "CHD_SCHEME": {"name": "Congenital Heart Disease scheme (Assam)", "kind": "scheme", "level": "state", "covers": "Free paediatric heart surgery", "quirk": "False positive in this dataset: the pattern 'CHD' matches the BTC office 'Director Cum CHD - PWD BTC'. All 6 tenders tagged CHD_SCHEME are BTC civil works, not heart surgery. Exclude or flag CHD_SCHEME in scheme answers."},
+    "OPERATION_SMILE": {"name": "Operation Smile (Assam)", "kind": "scheme", "level": "state", "covers": "Cleft lip and palate surgeries"},
+    "MAJONI": {"name": "Majoni scheme (Assam)", "kind": "scheme", "level": "state", "covers": "Financial security for the girl child"},
+    "ASSAM_FREE_DIAGNOSTICS": {"name": "Assam Free Diagnostics and Drugs scheme", "kind": "scheme", "level": "state", "covers": "Free tests and medicines for MCH"},
+    "HFW": {"name": "Health and Family Welfare Department", "kind": "department_tag", "covers": "Marks tenders issued by H&FW; not a scheme"},
+    "PWD_NH": {"name": "Public Works Department (Building and NH)", "kind": "department_tag", "covers": "Marks PWD building tenders; not a scheme"}
+  },
+  "departments": {
+    "_note": "department_top values in views.sql (first segment of the '||' chain).",
+    "National Health Mission": "NHM Assam, State and District Programme Management Units. Largest issuer of MCH tenders, mostly goods and programme items.",
+    "Public Works Building and NH Department": "PWB&NH. Builds MCH wings, maternity wards and hospitals; largest by awarded value.",
+    "Health and Family Welfare Department": "H&FW, incl. medical colleges (GMCH, FAAMCH Barpeta, Nagaon MCH) and Assam Medical Services Corporation (AMSCL), which buys drugs and equipment.",
+    "Bodoland Territorial Council": "BTC, the autonomous council for Kokrajhar, Chirang, Baksa, Udalguri and Tamulpur. Procures separately. Also appears as 'Bodoland Territorial Council-PWD' (same body, different spelling).",
+    "Bodoland Territorial Council-PWD": "Same body as 'Bodoland Territorial Council'. Group the two together when comparing departments.",
+    "Public Works Roads Department": "One tender in the data.",
+    "Cooperation Department": "One tender (West Assam Milk Producers Cooperative Union); a weak MCH match, treat with care."
+  },
+  "procurement_terms": {
+    "AOC": "Award of Contract. 'Accepted-AOC' = this bid won; 'Rejected-AOC' = contract stage reached but the listed bid was not accepted.",
+    "is_awarded": "True when Status is one of Accepted-AOC / ACCEPTED / AWARDED / Work Awarded / AOC. Defined in VALID_AWARDED_STATUSES in mch_tenders.py.",
+    "Not Admitted-Fee/PreQual/Technical": "The listed bid failed fee, pre-qualification or technical checks.",
+    "Rejected-Finance": "The listed bid failed at financial evaluation.",
+    "Rejected-Technical": "The listed bid failed at technical evaluation.",
+    "Tender Value": "Estimated value at publication (tender_value_inr).",
+    "Awarded Value": "Value of the bid listed in that row (bid_value_inr). Counts as spending only when is_awarded (awarded_amount_inr). For many goods and rate contracts it is ₹0, ₹1 or a per-unit rate (awarded_value_suspect).",
+    "Works / Goods / Services": "Tender Category: construction, supply, or services.",
+    "Item Rate / Item Wise / Turn-key / Supply": "Form of contract.",
+    "OCDS": "Open Contracting Data Standard, which the use case page says the tender data was mapped to."
+  },
+  "units": {
+    "currency": "All money columns are in Indian rupees (₹, INR).",
+    "lakh": "1 lakh = 100,000 = 1e5 rupees",
+    "crore": "1 crore = 10,000,000 = 1e7 rupees = 100 lakh",
+    "indian_digit_grouping": "Raw 'Tender Value in ₹' uses 2-digit grouping after the first thousand (2,06,34,54,000 = ₹206.35 crore). Strip commas before casting.",
+    "fiscal_year": "Indian fiscal year runs 1 April to 31 March; '2023-24' = Apr 2023 to Mar 2024. contract_fiscal_year in views.sql."
+  },
+  "geography": {
+    "district_names": "Upper case, matching 'dtname' in data-ecosystem/maps/Geojson/assam_district_2024-11.geojson (35 districts).",
+    "district_variants": {
+      "SIVSAGAR": "SIVASAGAR",
+      "Sibsagar": "SIVASAGAR",
+      "Kamrup (M)": "KAMRUP METRO",
+      "Kamrup Metropolitan": "KAMRUP METRO",
+      "Guwahati": "KAMRUP METRO",
+      "Morigaon / Marigaon": "MORIGAON",
+      "North Lakhimpur": "LAKHIMPUR",
+      "Karimganj / Sribhumi": "KARIMGANJ (renamed Sribhumi in Nov 2024; data uses KARIMGANJ)"
+    },
+    "boundary_changes": "Bajali and Tamulpur were carved out of Barpeta and Baksa in 2021-22 and are in the 2024-11 boundaries. Older tenders for those areas may be tagged to the parent district.",
+    "btr": "Bodoland Territorial Region districts: Kokrajhar, Chirang, Baksa, Udalguri, Tamulpur. is_btc marks tenders issued by BTC bodies."
+  },
+  "mch_vocabulary": {
+    "_note": "User words to map to this use case. Full keyword lists are in TENDERS/data/Keyword list.md and mch_tenders.py.",
+    "MCH": "Maternal and Child Health",
+    "IMR": "Infant Mortality Rate (deaths under age 1 per 1,000 live births). Not in this dataset; see the IMR District-wise Assam dataset on DataSpace.",
+    "SNCU": "Special Newborn Care Unit",
+    "NICU": "Neonatal Intensive Care Unit",
+    "ANC / PNC": "Antenatal care / Postnatal care",
+    "MCH wing": "Dedicated maternal and child health block at a hospital; the largest construction tenders",
+    "ILR": "Ice-Lined Refrigerator (vaccine cold chain)",
+    "GMCH": "Gauhati Medical College and Hospital, Guwahati (Kamrup Metro)",
+    "BPHC / CHC / PHC / SD": "Block PHC / Community Health Centre / Primary Health Centre / State Dispensary",
+    "hindi_terms": {"मातृ स्वास्थ्य": "maternal health", "शिशु": "infant/child", "टेंडर / निविदा": "tender", "जिला": "district", "खर्च": "spending"},
+    "assamese_terms": {"মাতৃ স্বাস্থ্য": "maternal health", "শিশু": "child", "নিবিদা / টেণ্ডাৰ": "tender", "জিলা": "district", "খৰচ": "spending"}
+  }
+}
