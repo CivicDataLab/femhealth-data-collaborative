@@ -1,8 +1,11 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: GitHub Discussions
-    url: https://github.com/CivicDataLab/DataSpaceBackend/discussions
-    about: Ask questions and discuss ideas with the community
-  - name: Security Issues
+  - name: Contributing guide
+    url: https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/CONTRIBUTING.md
+    about: How to send a change, and the rules for data files and scripts
+  - name: SOP on dataset transformation and tagging
+    url: https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/data-ecosystem/docs/%5BWIP%5D%20SOP_dataset_transformation_and_tagging.md
+    about: The standards every dataset and use case in this repository follows
+  - name: Security issues
     url: mailto:tech@civicdatalab.in
-    about: Please report security vulnerabilities via email
+    about: Please report security problems by email, not in a public issue

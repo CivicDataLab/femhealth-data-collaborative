@@ -1,0 +1,86 @@
+name: Suggest a dataset
+description: Point us to a dataset that would help answer questions about women's and girls' health in Assam
+title: "[Dataset]: "
+labels: ["dataset-suggestion", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. These fields match what the [data registry](https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/data-ecosystem/knowledge_graph/data_registry.csv) records for every dataset. Fill in what you know; we will look up the rest.
+  - type: input
+    id: title
+    attributes:
+      label: Dataset name
+      placeholder: Poshan Tracker, district-wise statistics
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+      description: Where the data can be downloaded or viewed.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: input
+    id: publisher
+    attributes:
+      label: Publisher
+      description: The organisation that publishes the data.
+      placeholder: Ministry of Women and Child Development (MWCD), Government of India
+  - type: dropdown
+    id: licence
+    attributes:
+      label: Licence
+      description: We can only add data whose licence allows redistribution.
+      options:
+        - Government Open Data License – India (GODL)
+        - Creative Commons (CC BY or CC BY-SA)
+        - Other open licence (say which below)
+        - Not stated or unclear
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: geography
+    attributes:
+      label: Geography and lowest level
+      placeholder: All India; district level
+  - type: input
+    id: period
+    attributes:
+      label: Time period and update frequency
+      placeholder: 2021 to present; monthly
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      multiple: true
+      options:
+        - CSV or Excel
+        - API
+        - PDF tables
+        - Web pages (would need scraping)
+        - Microdata (household or person level)
+        - Other
+  - type: textarea
+    id: use
+    attributes:
+      label: What would it help answer?
+      description: The question or use case this dataset supports, and who would use the answer.
+      placeholder: District comparisons of take-home ration coverage, to set beside NFHS-5 nutrition outcomes for district health officials.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Access restrictions (login, request form), known quality issues, or related datasets.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
