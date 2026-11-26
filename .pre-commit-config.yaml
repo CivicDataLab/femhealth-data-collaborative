@@ -1,75 +1,33 @@
+# Checks that run on `git commit` once you have run `pre-commit install`.
+# Run them on demand with `pre-commit run --all-files`.
+#
+# Data files (CSV, Excel, GeoJSON, PDF) are never rewritten by these hooks:
+# whitespace and end-of-file fixes apply only to code and documentation.
+
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-        exclude: ^aws/cloudformation/.*\.yml$
-    -   id: check-added-large-files
-    -   id: debug-statements
+      - id: trailing-whitespace
+        types_or: [python, markdown, yaml, sql]
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+        types_or: [python, markdown, yaml, sql]
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=51200]      # 50 MB; see "Rules for data files" in CONTRIBUTING.md
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: debug-statements
 
--   repo: https://github.com/psf/black
-    rev: 24.2.0
+  - repo: https://github.com/psf/black
+    rev: 26.10.1
     hooks:
-    -   id: black
-        language_version: python3.11
+      - id: black
 
--   repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+  - repo: https://github.com/pycqa/isort
+    rev: 9.0.2
     hooks:
-    -   id: isort
+      - id: isort
         args: ["--profile", "black"]
-
--   repo: local
-    hooks:
-    -   id: cloudformation-validate
-        name: AWS CloudFormation Validation
-        description: Validates CloudFormation templates using AWS CLI
-        entry: bash -c 'aws cloudformation validate-template --template-body file://$0 || exit 1'
-        language: system
-        files: ^aws/cloudformation/.*\.yml$
-        require_serial: true
-        pass_filenames: true
-
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
-    hooks:
-    -   id: mypy
-        language: python
-        language_version: python3.11
-        additional_dependencies:
-          - types-requests
-          - types-PyYAML
-          - types-python-dateutil
-          - types-setuptools
-          - django-stubs
-          - djangorestframework-stubs
-          - pandas-stubs
-          - pandas
-          - deepdiff
-          - types-redis
-          - strawberry-graphql
-          - strawberry-graphql-django
-          - django-environ
-          - structlog
-          - django
-          - elasticsearch-dsl
-          - django-elasticsearch-dsl
-          - django-elasticsearch-dsl-drf
-          - pyecharts
-          - selenium
-          - python-decouple
-          - djangorestframework
-          - django-debug-toolbar
-          - django-ratelimit
-          - django-cors-headers
-          - psycopg2-binary
-          - python-dotenv
-          - uvicorn
-          - djangorestframework-simplejwt
-          - python-keycloak
-          - django-activity-stream
-
-        args: [--config-file=mypy.ini]
-        exclude: ^tests/
