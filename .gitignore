@@ -40,3 +40,12 @@ config.ini
 
 # Scraper working output (raw monthly scrapes are concatenated into data/)
 analytics/*/TENDERS/scripts/scraper/scraped_recent_tenders/concatinated_csvs/
+
+# Agent kit: local only, never committed
+# Claude Code config: core manual (CLAUDE.md), agents, commands, settings
+.claude/
+# Kit manual (engineering/), plans/ and tools/
+.agent-kit/
+# Feature worktrees and test-run notes the kit's commands create
+.worktrees/
+.logs/
