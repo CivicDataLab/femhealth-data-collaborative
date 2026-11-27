@@ -1,0 +1,82 @@
+name: Report a data problem
+description: A wrong or missing value, a record tagged or geotagged wrongly, a broken file, or a script that fails
+title: "[Data]: "
+labels: ["data-quality", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping keep FemHealth data accurate. The more precisely you point to the problem, the faster we can check and fix it.
+
+        Please do not paste personal information about individuals (names, phone numbers, addresses) into this issue.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem is it?
+      options:
+        - Wrong or missing value
+        - Record wrongly included or left out (for example, a tender wrongly tagged as maternal and child health)
+        - Wrong scheme, department or other tag
+        - Wrong or missing district
+        - File is broken, unreadable or missing
+        - Script fails or gives a wrong result
+        - Documentation or metadata is wrong or out of date
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of the repository?
+      options:
+        - "Use case: Assam maternal and child health tenders"
+        - "Use case: Assam tea worker anaemia"
+        - "Source data in data-ecosystem/sources"
+        - "Maps and lookups in data-ecosystem/maps"
+        - "Data registry (data_registry.csv)"
+        - "Query engine reference files"
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: File path
+      description: The file where you found the problem.
+      placeholder: analytics/Assam_MCH_analysis/TENDERS/data/MCH_tenderdata_Assam_2019_to_2025.csv
+    validations:
+      required: true
+  - type: textarea
+    id: records
+    attributes:
+      label: Records affected
+      description: Record IDs, row numbers or column names. Leave blank if the whole file is affected.
+      placeholder: |
+        Tender ID 2024_BTC_41642_1, column "Scheme"
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong, and what did you expect?
+      placeholder: |
+        The tender is tagged CHD_SCHEME (Congenital Heart Disease scheme), but it is a building repair by the BTC office "Director Cum CHD". It should not carry that tag.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: A link to the original source page or report, a page number, or a screenshot. Helps us check the fix.
+  - type: textarea
+    id: output
+    attributes:
+      label: Error output (for script problems)
+      description: The command you ran and any error message. This is formatted as code automatically.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

@@ -1,64 +1,51 @@
-# Pull Request
+## Summary
 
-## Description
+<!-- What changed and why, in two or three sentences. -->
 
-Brief description of the changes introduced by this PR.
+Closes #
 
-## Type of Change
+## Type of change
 
-Please delete options that are not relevant.
+<!-- Tick all that apply. -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Performance improvement
-- [ ] Code refactoring
-- [ ] Test improvements
+- [ ] New or updated source dataset (`data-ecosystem/sources`)
+- [ ] Use case analysis (`analytics/`)
+- [ ] Tagging or geotagging rules
+- [ ] Data fix
+- [ ] Script fix
+- [ ] Query engine reference files
+- [ ] Documentation
 
-## Related Issues
+## Data sources
 
-Fixes #(issue number)
-Closes #(issue number)
-Relates to #(issue number)
+<!-- For new or updated data only; delete this section otherwise. -->
 
-## Changes Made
+| Dataset | Source URL | Publisher | Licence |
+| --- | --- | --- | --- |
+|  |  |  |  |
 
-- [ ] Change 1
-- [ ] Change 2
-- [ ] Change 3
+## Effect on headline numbers
 
-## Testing
+<!-- Row counts, totals, tag counts or district counts before and after this change. Write "None" if outputs do not change. -->
 
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] I have tested this change manually
+| Measure | Before | After |
+| --- | --- | --- |
+|  |  |  |
 
-### Test Instructions
+## Checks
 
-Please describe how reviewers can test your changes:
+<!-- See CONTRIBUTING.md and the SOP (data-ecosystem/docs). Tick what you did; mark items that do not apply as N/A. -->
 
-1. Step 1
-2. Step 2
-3. Step 3
+- [ ] Raw files are unchanged; every change to data is made by a script committed in this PR
+- [ ] Licences recorded, and they allow redistribution
+- [ ] Registry row and dataset README added or updated (new data)
+- [ ] Column names, units, dates and district names follow SOP Stage 3
+- [ ] Tagging changes reviewed by someone other than me, with precision recorded (SOP Stage 4)
+- [ ] SOP Stage 6 quality checks run; failures fixed or flagged with a written caveat
+- [ ] Query engine reference regenerated, if this use case has one
+- [ ] No personal data, credentials or files over 100 MB; files over 50 MB listed below
+- [ ] Python formatted with `black` and `isort --profile black`
 
-## Screenshots (if applicable)
+## Caveats and notes for the reviewer
 
-Add screenshots to help explain your changes.
-
-## Checklist
-
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published in downstream modules
-- [ ] I have run `black .`, `isort .`, and `flake8` and fixed any issues
-- [ ] Database migrations are included (if applicable)
-
-## Additional Notes
-
-Add any additional notes or context about the PR here.
+<!-- Flags added, known residual errors, large files, anything the reviewer should look at first. -->

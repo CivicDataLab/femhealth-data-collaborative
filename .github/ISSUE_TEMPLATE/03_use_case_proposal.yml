@@ -1,0 +1,81 @@
+name: Propose a use case
+description: Suggest a question that FemHealth data should answer, as the first step of a new use case (SOP Stage 1)
+title: "[Use case]: "
+labels: ["use-case", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A use case starts with one decision-relevant question, written down before any data is touched. This form follows Stage 1 of the [SOP on dataset transformation and tagging](https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/data-ecosystem/docs/%5BWIP%5D%20SOP_dataset_transformation_and_tagging.md).
+  - type: textarea
+    id: question
+    attributes:
+      label: The question
+      description: One sentence, naming the decision the answer would inform.
+      placeholder: Where does Assam's public procurement for maternal and child health go, and does it line up with district health needs?
+    validations:
+      required: true
+  - type: checkboxes
+    id: users
+    attributes:
+      label: Who would use the answer?
+      options:
+        - label: District and state health officials (NHM, Health Department)
+        - label: Finance and planning officials
+        - label: Civil society organisations and frontline programmes
+        - label: Researchers and students
+        - label: Journalists
+  - type: input
+    id: geography
+    attributes:
+      label: Geography
+      description: State, district, revenue circle or village.
+      placeholder: Assam, district level
+    validations:
+      required: true
+  - type: input
+    id: period
+    attributes:
+      label: Time window
+      description: Say whether calendar or fiscal (April to March) years apply.
+      placeholder: Fiscal years 2019-20 to 2024-25
+  - type: textarea
+    id: sources
+    attributes:
+      label: Candidate data sources
+      description: Datasets already in this repository, or new ones (link them). Check the data registry first.
+      placeholder: |
+        - NFHS-5 district factsheets (in data-ecosystem/sources)
+        - HMIS district reports (in data-ecosystem/sources)
+        - Assam tenders portal (new; would need scraping)
+    validations:
+      required: true
+  - type: textarea
+    id: tags
+    attributes:
+      label: Tags or categories needed
+      description: How records would need to be classified to answer the question, and what would count as a wrong tag.
+      placeholder: Tenders tagged as maternal and child health related, by scheme and department. Veterinary tenders must never be tagged.
+  - type: checkboxes
+    id: sensitive
+    attributes:
+      label: Sensitive topics
+      description: Use cases touching these are reviewed with the UNICEF focal point before work starts (SOP Stages 1 and 9).
+      options:
+        - label: Mental health
+        - label: Gender-based violence
+        - label: Reproductive health
+        - label: Individual-level (household or person) survey data
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Related work, dashboards, deadlines, or partners involved.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/CivicDataLab/femhealth-data-collaborative/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
