@@ -4,12 +4,12 @@
 
 # Data handling (all use cases)
 pandas==2.3.3
-numpy==2.5.4
+numpy==2.5.5
 python-dateutil==2.9.0.post0
 openpyxl==3.1.5  # reading .xlsx sources
 
 # Query engine reference builders (analytics/*/query_engine_reference/scripts)
-duckdb==2.0.0
+duckdb==2.0.1
 
 # Geospatial: district geotagging, map layers, DRIMS exploration
 geopandas==1.2.0
@@ -28,6 +28,6 @@ scipy==1.18.1
 # OCR engine installed on the system (e.g. `brew install tesseract`).
 requests==2.34.2
 urllib3==2.8.0
-selenium==4.52.0
+selenium==4.54.0
 pytesseract==0.3.13
 pillow==10.4.0
